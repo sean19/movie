@@ -1,0 +1,161 @@
+doctype html
+html(lang='en')
+
+    head
+        meta(charset='utf-8')
+        meta(http-equiv='X-UA-Compatible', content='IE=edge')
+        meta(name='viewport', content='width=device-width, initial-scale=1, shrink-to-fit=no')
+        meta(name='description', content='')
+        meta(name='author', content='')
+
+        include ../pug_includes/title.pug
+
+        include ../pug_includes/css/core.pug
+
+        // Page level plugin CSS
+        link(href='vendor/datatables/dataTables.bootstrap4.css', rel='stylesheet')
+
+        include ../pug_includes/css/custom.pug
+
+
+    //----------------------------
+    body#page-top.fixed-nav.sticky-footer.bg-dark
+        div(class="modal fade" id="edit" tabindex="-1" role="dialog"
+        aria-labelledby="myModalLabel" aria-hidden="true"
+        style="position:fixed;top:20%")
+            div(class="modal-dialog")
+                div(class="modal-content")
+                    div(class="modal-header")
+                        h4(class="modal-title" id="info-dialog-title")
+                        button(type="button" class="close" data-dismiss="modal" aria-hidden="true") &times;
+                    div( id="edit_inputs" class="modal-body")
+                    div( class="modal-footer text-center")
+                        button(type="button" data-dismiss="modal" class="btn btn-outline-danger" id="btn-delete") 删除
+                            button(type="button" class="btn btn-default" data-dismiss="modal") 关闭
+                            button(type="button" data-dismiss="modal" class="btn btn-warning" id="btn-add") 添加
+                            button(type="button" data-dismiss="mSodal" class="btn btn-primary" id="btn-edit") 提交修改
+
+
+
+        include ../pug_includes/navbar.pug
+        .content-wrapper
+            .container-fluid
+                // Breadcrumbs
+                ol.breadcrumb
+                    li.breadcrumb-item
+                        div(id='divTitle' style="with:500px") 服务器列表
+
+
+
+
+include ../pug_includes/footer.pug
+
+include ../pug_includes/scroll-to-top.pug
+
+include ../pug_includes/modals/logout.pug
+
+include ../pug_includes/js/core.pug
+
+// Page level plugin JavaScript
+script(src='vendor/datatables/jquery.dataTables.js')
+script(src='vendor/datatables/dataTables.bootstrap4.js')
+
+include ../pug_includes/js/custom.pug
+
+
+// Custom scripts for this page
+script(src='js/sb-admin-datatables.min.js')
+script(src='js/sb-admin-datatables.min.js')
+script(src="js/DataProvider.js")
+script(src="js/FileResder.js")
+script(src='js/bootstrap-datetimepicker.js')
+link(href='css/bootstrap-datetimepicker.css', rel='stylesheet')
+script.
+
+    function getcpuData(){
+        $.ajax({
+            url: "/get_cpu_info",
+            data: {},
+            type: 'post',
+            cache: false,
+            dataType: 'json',
+            success: function (data) {
+                if (data.error == 0) {
+                    updatedata(data.data);
+                } else if (data.error == 401) {
+                    notLogin(data);
+                } else {
+                    showAlert('错误，请稍后重试');
+                }
+            },
+            error: function () {
+                showAlert('错误，请稍后重试');
+            }
+        });
+    }
+    getcpuData();
+    function updatedata(msg){
+        // alert(JSON.stringify(msg))
+        for (var i = 0; i < msg.length; i++) {
+            var serverinfo = msg[i];
+            var num = Number(serverinfo.cpu);
+            if(!num)num=0;
+            var ss="---------------------";
+            var ss2="";
+            for(var j=0;j<20;j++){
+                ss2+=(num/20>j?"[][]":"==");
+            }
+            var str_cpu = "cpu="+num;
+            var str_open = "状态:"+(serverinfo.online=="1"?"<span></span><font color='blue'>开启</font></span>":"<span><font color='red'>关闭</font></span>") ;
+            var btn_restart = "<button type='button' class='btn btn-outline-danger' onclick='restartserver(\"+i+\")'>重启</button>";
+            var btn_start = "<button type='button' class='btn btn-outline-danger' onclick='startserverorstop("+i+","+serverinfo.online+")'>"+(serverinfo.online=="1"?"关闭":"开启")+"</button>";
+
+        var str ="<div >"+ btn_restart+"==="+btn_start +serverinfo.serverkey +":"+str_open+ ss+"<span>"  +str_cpu+"</span></div>";
+            $('#divTitle').append(str);
+            $('#divTitle').append(ss2);
+        }
+
+    }
+    function startserverorstop(i,online){
+        var open  = online=="1"?"0":"1";
+        $.ajax({
+            url: "/openServer",
+            data: {open: open,serverid:i},
+            type: 'post',
+            cache: false,
+            dataType: 'json',
+            success: function (data) {
+                if (data.error == 0) {
+                    showAlert(data.message);
+                } else if (data.error == 401) {
+                    notLogin(data);
+                } else {
+                    showAlert('错误，请稍后重试');
+                }
+            },
+            error: function () {
+                showAlert('错误，请稍后重试');
+            }
+        });
+    }
+    function restartserver(idd){
+        $.ajax({
+            url: "/restartServer",
+            data: {idx:idd},
+            type: 'post',
+            cache: false,
+            dataType: 'json',
+            success: function (data) {
+                if (data.error == 0) {
+                    showAlert('重启动中！');
+                } else if (data.error == 401) {
+                    notLogin(data);
+                } else {
+                    showAlert('错误，请稍后重试');
+                }
+            },
+            error: function () {
+                showAlert('错误，请稍后重试');
+            }
+        });
+    }

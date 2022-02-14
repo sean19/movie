@@ -1,0 +1,17 @@
+doctype html
+html(lang='en' height="100%")
+
+
+    //----------------------------
+    body(height="100%")
+        div(id="div" style="width=100%;height=100%;backGround:#ff0000") asd
+            iframe(src="http://www.baidu.com" width="50%" height="100%")
+
+
+script.
+    init();
+    function init(){
+        var div = document.getElementById('div');
+        var sty = "width:"+document.body.clientWidth+"px;height="+document.body.offsetHeight+"px"
+        div.style=sty;
+    }

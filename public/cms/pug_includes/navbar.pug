@@ -1,0 +1,89 @@
+// Navigation
+nav#mainNav.navbar.navbar-expand-lg.navbar-dark.bg-dark.fixed-top
+  a.navbar-brand(href='#') ASIN示例后台
+  button.navbar-toggler.navbar-toggler-right(type='button', data-toggle='collapse', data-target='#navbarResponsive', aria-controls='navbarResponsive', aria-expanded='false', aria-label='Toggle navigation')
+    span.navbar-toggler-icon
+  #navbarResponsive.collapse.navbar-collapse
+    ul#exampleAccordion.navbar-nav.navbar-sidenav
+      //li.nav-item(data-toggle='tooltip', data-placement='right', title='Dashboard')
+      //  a.nav-link(href='index.html')
+      //    i.fa.fa-fw.fa-dashboard
+      //    span.nav-link-text
+      //      | Dashboard
+      //li.nav-item(data-toggle='tooltip', data-placement='right', title='Charts')
+      //  a.nav-link(href='RoomChart.html')
+      //    i.fa.fa-fw.fa-area-chart
+      //    span.nav-link-text
+      //      | Charts
+      //==============================================
+      li.nav-item(data-toggle='tooltip', data-placement='right', title='Components')
+         a.nav-link.nav-link-collapse.collapsed(data-toggle='collapse', href='#amazon', data-parent='#exampleAccordion')
+           i.fa.fa-fw.fa-wrench
+           span.nav-link-text
+             | amazonASIN系统
+         ul#amazon.sidenav-second-level.collapse
+           li
+             a(href='index.html') 查看数据
+           li
+             a(href='ASIN_data_get.html') 数据采集
+
+           a.nav-link.nav-link-collapse.collapsed(data-toggle='collapse', href='#dy2018', data-parent='#exampleAccordion')
+             i.fa.fa-fw.fa-wrench
+             span.nav-link-text
+               | dy2018
+           ul#dy2018.sidenav-second-level.collapse
+             li
+               a(href='index.html') 查看数据
+             li
+               a(href='ASIN_data_get.html') 数据采集
+
+      li.nav-item(data-toggle='tooltip', data-placement='right', title='Components')
+         a.nav-link.nav-link-collapse.collapsed(data-toggle='collapse', href='#m11k', data-parent='#exampleAccordion')
+           i.fa.fa-fw.fa-wrench
+           span.nav-link-text
+             | 视频播放
+         ul#m11k.sidenav-second-level.collapse
+           li
+             a(href='movie_online_search.html?platform=4') 搜索视频1
+
+
+      li.nav-item(data-toggle='tooltip', data-placement='right', title='Components')
+         a.nav-link.nav-link-collapse.collapsed(data-toggle='collapse', href='#book', data-parent='#exampleAccordion')
+           i.fa.fa-fw.fa-wrench
+           span.nav-link-text
+             | 小说
+         ul#book.sidenav-second-level.collapse
+           li
+             a(href='book_online_search.html?platform=1') 搜索小说
+           li
+             a(href='book_online_search.html?platform=1')  查看旧记录
+
+      li.nav-item(data-toggle='tooltip', data-placement='right', title='Components')
+        a.nav-link.nav-link-collapse.collapsed(data-toggle='collapse', href='#tv', data-parent='#exampleAccordion')
+          i.fa.fa-fw.fa-wrench
+          span.nav-link-text
+            | 电视直播
+        ul#tv.sidenav-second-level.collapse
+          li
+            a(href='tv_online_info.html?platform=100') 直播列表
+          li
+      li.nav-item(data-toggle='tooltip', data-placement='right', title='Components')
+        a.nav-link.nav-link-collapse.collapsed(data-toggle='collapse', href='#clwaer', data-parent='#exampleAccordion')
+          i.fa.fa-fw.fa-wrench
+          span.nav-link-text
+            | 参数调度
+        ul#clwaer.sidenav-second-level.collapse
+          li
+            a(href='check_clawer.html') 参数设置
+          li
+            a(href='check_book.html') book设置
+          li
+
+      li.nav-itemfa-sign-out
+        a.nav-link(data-toggle='modal', data-target='#exampleModal')
+          i.fa.fa-fw.fa-sign-out
+          | Logout
+        button(onclick="location.reload();" class="btn btn-primary")
+          | 刷新
+        button(onclick="changestyle();" class="btn btn-primary")
+          | 样式

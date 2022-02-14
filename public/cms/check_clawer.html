@@ -1,0 +1,337 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><meta name="description" content=""><meta name="author" content=""><title id="titletv">在线影视</title><!-- Bootstrap core CSS--><link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet"><!-- Custom fonts for this template--><link href="vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css"><link href="css/app.css" rel="stylesheet"><!-- Page level plugin CSS--><link href="vendor/datatables/dataTables.bootstrap4.css" rel="stylesheet"><!-- Custom styles for this template--><link href="css/sb-admin.css" rel="stylesheet"></head><body class="fixed-nav sticky-footer bg-dark" id="page-top"><div class="modal fade" id="edit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="position:fixed;top:20%"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><h4 class="modal-title" id="info-dialog-title"></h4><button class="close" type="button" data-dismiss="modal" aria-hidden="true">&times;</button></div><div class="modal-body" id="edit_inputs"></div><div class="modal-footer text-center"><button class="btn btn-outline-danger" type="button" data-dismiss="modal" id="btn-delete">删除<button class="btn btn-default" type="button" data-dismiss="modal">关闭</button><button class="btn btn-warning" type="button" data-dismiss="modal" id="btn-add">添加</button><button class="btn btn-primary" type="button" data-dismiss="mSodal" id="btn-edit">提交修改</button></button></div></div></div></div><!-- Navigation--><nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav"><a class="navbar-brand" href="#">ASIN示例后台</a><button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button><div class="collapse navbar-collapse" id="navbarResponsive"><ul class="navbar-nav navbar-sidenav" id="exampleAccordion"><!--li.nav-item(data-toggle='tooltip', data-placement='right', title='Dashboard')--><!--  a.nav-link(href='index.html')--><!--    i.fa.fa-fw.fa-dashboard--><!--    span.nav-link-text--><!--      | Dashboard--><!--li.nav-item(data-toggle='tooltip', data-placement='right', title='Charts')--><!--  a.nav-link(href='RoomChart.html')--><!--    i.fa.fa-fw.fa-area-chart--><!--    span.nav-link-text--><!--      | Charts--><!--==============================================--><li class="nav-item" data-toggle="tooltip" data-placement="right" title="Components"><a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#amazon" data-parent="#exampleAccordion"><i class="fa fa-fw fa-wrench"></i><span class="nav-link-text">amazonASIN系统</span></a><ul class="sidenav-second-level collapse" id="amazon"><li><a href="index.html">查看数据</a></li><li><a href="ASIN_data_get.html">数据采集</a></li><a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#dy2018" data-parent="#exampleAccordion"><i class="fa fa-fw fa-wrench"></i><span class="nav-link-text">dy2018</span></a><ul class="sidenav-second-level collapse" id="dy2018"><li><a href="index.html">查看数据</a></li><li><a href="ASIN_data_get.html">数据采集</a></li></ul></ul></li><li class="nav-item" data-toggle="tooltip" data-placement="right" title="Components"><a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#m11k" data-parent="#exampleAccordion"><i class="fa fa-fw fa-wrench"></i><span class="nav-link-text">视频播放</span></a><ul class="sidenav-second-level collapse" id="m11k"><li><a href="movie_online_search.html?platform=4">搜索视频1</a></li></ul></li><li class="nav-item" data-toggle="tooltip" data-placement="right" title="Components"><a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#book" data-parent="#exampleAccordion"><i class="fa fa-fw fa-wrench"></i><span class="nav-link-text">小说</span></a><ul class="sidenav-second-level collapse" id="book"><li><a href="book_online_search.html?platform=1">搜索小说</a></li><li><a href="book_online_search.html?platform=1"> 查看旧记录</a></li></ul></li><li class="nav-item" data-toggle="tooltip" data-placement="right" title="Components"><a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#tv" data-parent="#exampleAccordion"><i class="fa fa-fw fa-wrench"></i><span class="nav-link-text">电视直播</span></a><ul class="sidenav-second-level collapse" id="tv"><li><a href="tv_online_info.html?platform=100">直播列表</a></li><li></li></ul></li><li class="nav-item" data-toggle="tooltip" data-placement="right" title="Components"><a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#clwaer" data-parent="#exampleAccordion"><i class="fa fa-fw fa-wrench"></i><span class="nav-link-text">参数调度</span></a><ul class="sidenav-second-level collapse" id="clwaer"><li><a href="check_clawer.html">参数设置</a></li><li><a href="check_book.html">book设置</a></li><li></li></ul></li><li class="nav-itemfa-sign-out"><a class="nav-link" data-toggle="modal" data-target="#exampleModal"><i class="fa fa-fw fa-sign-out"></i>Logout</a><button class="btn btn-primary" onclick="location.reload();">刷新</button><button class="btn btn-primary" onclick="changestyle();">样式</button></li></ul></div></nav><div class="content-wrapper"><div class="container-fluid"><!-- Breadcrumbs--><ol class="breadcrumb"><li class="breadcrumb-item"><div><pan> 网页检测：</pan></div><div><label id="showTip">请输入网页内容</label></div><div><label id="showTip">【例】https://m.xbooktxt.net/search.php?q=%E5%93%88%E5%93%88</label></div><div id="input"><input id="txt_asin_code" type="text"><span>&emsp;&emsp;</span><button class="btn btn-outline-danger" id="btnGet" type="button" data-dismiss="modal" onclick="getDataFromHtml()">获取页面数据</button><span>&emsp;&emsp;</span><input id="redoitype" type="radio" name="tt" checked="true" value="1" onclick="ontypechange()"><span>html<input id="redoitype" type="radio" name="tt" value="2" onclick="ontypechange()"></span><span>json</span></div><div id="divhtml"><span>html</span><label id="lblhtml">空</label></div><div id="divcheck" style="display:none"><div><span>-获取参数列表----------------------------</span></div><div><span>【例】body > div.result-list > div:nth-child(1) > div.result-game-item-detail > h3 > a</span></div><div><span>【选择器】body > div.result-list > div</span></div><div>  <span>【路径】div.result-game-item-detail > h3 > a</span></div><div><span>-获取参数列表----------------------------</span></div><div><label id="lblname">选择器</label><input id="txt_config_code" type="text"><span>&emsp;&emsp;</span><button class="btn btn-outline-danger" id="btnlist" type="button" data-dismiss="modal" onclick="getcheckDatalist()">分析列表</button></div><div id="divProduct"><label id="lblchecklistinfo">空</label><label id="lblchecklistdata">空</label></div><div id="divsub" style="display:none"><label id="lblname">字段名</label><input id="txt_config_name" type="text"><div><label id="lblatt">path()</label><input id="txt_config_path" type="text"></div><div id="sub_att"><label id="lblatt">att==</label><input id="txt_config_att" type="text"><label id="lblatt">text：文本/all:html/空:text/其它:data[0].attribs[att]</label></div><div id="sub_deel"><label>deel=</label><input id="txt_config_deel" type="text"><label>处理方法"{'title':'substr','param':'str1@str2'},{'title':'replace','param':'str3@str4'},{'title':'json','param':''},{'title':'get','param':'str5'}"::::json格式</label></div><div> <button class="btn btn-outline-danger" id="btnck" type="button" data-dismiss="modal" onclick="getfindData()">分析获取字段</button></div><div><label id="lblfindinfo">空</label></div><div><label id="lblfinddata">空</label></div></div><div id="showtable"></div><div> <span>&emsp;&emsp;</span></div><div> <button class="btn btn-outline-danger" id="btnckadd" type="button" data-dismiss="modal" onclick="addData()">添加到表</button><span>&emsp;&emsp;</span><button class="btn btn-outline-danger" id="btnckdelete" type="button" data-dismiss="modal" onclick="deleteData()">删除一行</button><span>&emsp;&emsp;</span><button class="btn btn-outline-danger" id="btnckdelete" type="button" data-dismiss="modal" onclick="testData()">测试数据</button></div><div id="resulttable"></div></div><div id="divupload"><div><span>【5】****************服务器操作****************</span></div><div><label>id&emsp;&emsp;&emsp;</label><input id="txt_upload_id" type="text"></div><div> <label>说明&emsp;&emsp;</label><input id="txt_upload_info" type="text"></div><div> <span>&emsp;&emsp;</span><label id="lbluploaddata">空</label></div><div> <button class="btn btn-outline-danger" id="btnckupload" type="button" data-dismiss="modal" onclick="uoloadData()">开始上传</button></div><div> <span>&emsp;&emsp;【6】----------------------注意加载的是id的数据</span></div><div> <button class="btn btn-outline-danger" id="btnckdown" type="button" data-dismiss="modal" onclick="downloadData()">加载</button></div></div></li></ol></div></div></body></html><footer class="sticky-footer"><div class="container"><div class="text-center"><small>Copyright © Your Website 2018</small></div></div></footer><!-- Scroll to Top Button--><a class="scroll-to-top rounded" href="#page-top"><i class="fa fa-angle-up"></i></a><!-- Logout Modal--><div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"><div class="modal-dialog" role="document"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5><button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button></div><div class="modal-body">Select "Logout" below if you are ready to end your current session.</div><div class="modal-footer"><button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button><a class="btn btn-primary" id="exampleModalLabel1" ONCLICK="logouthttp()">Logout</a><script>function logouthttp() {
+    $.ajax({
+        url: '/admin_log_out',
+        data: {},
+        type: 'post',
+        cache: false,
+        dataType: 'json',
+        success: function (data) {
+            if (data.error == 0) {
+                showAlert('退出成功');
+                setTimeout("window.location.href = 'login.html'", 1000);
+                return;
+            }
+        },
+        error: function () {
+            showAlert('错误，请稍后重试');
+        }
+    });
+}</script></div></div></div></div><!-- Bootstrap core JavaScript--><script src="vendor/jquery/jquery.min.js"></script><script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script><!-- Core plugin JavaScript--><script src="vendor/jquery-easing/jquery.easing.min.js"></script><!--提示框--><script src="/javascripts/alert.min.js"></script><script type="text/javascript">function notLogin( data ) {
+    if( null == data || 401 != data.error )
+    {//有登录状态正常数据时，返回false
+        return false;
+    }
+    alert("亲，未登录！或者帐号登录超时");
+    // jqueryAlert({
+    //     'content':"亲，未登录！或者帐号登录超时",
+    //     'contentTextAlign': 'center',
+    //     'height': '130',
+    //     'width': '300',
+    //     'title': '登录帐号',
+    //     'modal': true,
+    //     'bodyScroll': true
+    // } );
+
+    // setTimeout( function() {
+        window.location.href = "/cms/login.html"
+    // }, 1000 );
+
+    return true;//没有登录，返回true
+}
+function goLogin(data) {
+    notLogin( data );
+    return data.data;
+}</script><!-- Page level plugin JavaScript--><script src="vendor/datatables/jquery.dataTables.js"></script><script src="vendor/datatables/dataTables.bootstrap4.js"></script><!-- Custom scripts for all pages--><script src="js/sb-admin.min.js"></script><!-- Custom scripts for this page--><script src="js/sb-admin-datatables.min.js"></script><script src="js/sb-admin-datatables.min.js"></script><script src="js/DataProvider.js"></script><script src="js/FileResder.js"></script><script src="js/UtillHtmlCheck.js"></script><script> var btn = document.getElementById('btnGet');
+ var lbl = document.getElementById('showTip');
+ var divProduct= document.getElementById('divProduct');
+ var showtable= document.getElementById('showtable');
+ var lblhtml= document.getElementById('lblhtml');
+ var divcheck= document.getElementById('divcheck');
+ var lblchecklistinfo= document.getElementById('lblchecklistinfo');
+ var lblchecklistdata= document.getElementById('lblchecklistdata');
+
+ var divsub= document.getElementById('divsub');
+ var lblfindinfo= document.getElementById('lblfindinfo');
+ var lblfinddata= document.getElementById('lblfinddata');
+
+ var resulttable= document.getElementById('resulttable');
+
+ var lbluploaddata= document.getElementById('lbluploaddata');
+
+
+ 
+
+ 
+ var checkdata=null;
+ var datatype='1';//1是html2是json
+
+ //==============
+ function ontypechange(){
+     this.datatype= $("input[name='tt']:checked").val();
+     alert("数据类型："+(this.datatype=='1'?"html":"json"));
+ }
+ function getDataFromHtml() {
+     try{
+         var kw = $('#txt_asin_code')[0].value;
+         if (kw == "" ) {
+             lbl.textContent = "请输入关键字!";
+         } else {
+             lblhtml .textContent = "<span>**************************</span>";
+             this.dogetDataFromHtml(kw)
+         }
+     }catch (e) {
+         lbl.textContent = e.toString();
+     }
+
+ }
+ function dogetDataFromHtml(kw){ 
+     lbl.textContent = "正在搜索"+kw;
+     var keyword = encodeURI(kw);
+     alert(kw);
+     var obj = {keyword: keyword};
+     this.getHtmlData("/gethtmldata", JSON.stringify(obj), this.showHtmlData);
+ }
+
+ function showHtmlData(data){
+     //- alert(JSON.stringify(data));
+    var statusCode = data.data["statusCode"];
+     //- alert(statusCode);
+
+    if(statusCode=="200"){
+         checkdata= data.data ;
+         lblhtml .textContent = "内容长度:"+JSON.stringify(checkdata)  .length;
+         divcheck .style.display="inline";
+    }else{
+        aleart("加载错误:"+statusCode);
+         divcheck.style.display="none";
+    }
+ }
+ //===获取列表======================================================
+function getcheckDatalist(){
+     try{
+         var selector = $('#txt_config_code')[0].value;
+         if (checkdata ==null || selector == "" ) {
+             lblchecklistinfo.textContent = "请输入分析字符!";
+         } else {
+             lblchecklistinfo.textContent="开始分析。。。";
+             if(this.datatype=='1'){
+                 //- var keyword = JSON.parse(kw);
+                 //- var body = encodeURI(checkdata);
+                 var obj = {selector: selector,body:checkdata};
+                 this.getHtmlData("/getcheckhtmldatalist", JSON.stringify(obj), this.showCheckHtmlDataList);
+             }else{
+                 var bodyobj=JSON.parse(this.checkdata.body);
+                 var d=bodyobj[selector]
+                 showCheckHtmlDataList(d)
+             }
+           
+         }
+     }catch (e) {
+         lbl.textContent = e.toString();
+     }
+}  
+function showCheckHtmlDataList(data){
+     var str = data.data;
+     console.log(str)
+     alert("长度==="+data.length)
+     this.lblchecklistinfo .textContent="分析完成；长度==="+data.length;
+     if(str){
+         lblchecklistdata.textContent= "字符长度"+str.length;
+     }
+     if(data.length>0){
+         divsub.style.display="inline";
+     }else{
+         divsub.style.display="none";
+
+     }
+    
+ }
+ //=======获取搜索数据=================
+ function getfindData(){
+         var name = $('#txt_config_name')[0].value;
+         var path = $('#txt_config_path')[0].value;
+         var att = $('#txt_config_att')[0].value;
+         var deel = $('#txt_config_deel')[0].value;
+         var child = "1";
+         try{
+             var selector = $('#txt_config_code')[0].value;
+              if (checkdata ==null || selector == ""){
+                 lblfindinfo.textContent = "请执行第1，第二步操作";
+                 return;
+              }
+             if ( name==""||child=="") {
+                 lblfindinfo.textContent = "请输入分析字符!";
+                 return;
+             } 
+             lblfindinfo.textContent="开始搜索。。。";
+             //- alert(deel);
+             //- var dellobj = JSON.parse(deel);
+             //- var attribs = {name:name,path:path,att:att,child:child,deel:JSON.parse(deel)};
+             var obj = {datatype:this.datatype, selector: selector,body:checkdata,name:name,path:path,att:att,child:child,deel:deel};
+             var str =JSON.stringify(obj);
+             lblfindinfo.textContent="开始搜索。。。";
+             this.getHtmlData("/getcheckhtmlinfo", JSON.stringify(obj), this.showfinddata);
+             infodata=""
+         }catch (e) {
+             lbl.textContent = e.toString();
+         }
+ }
+ function showfinddata(data){
+     var str = data.data;
+     console.log(str)
+     lblfindinfo.textContent="结束搜索。。。";
+     lblfinddata.textContent= str;
+     infodata=str;
+ }
+ //======================================================
+ //==========表操作============================================
+ //======================================================
+ //======================================================
+ //======================================================
+ //======================================================
+ //======================================================
+ //======================================================
+ var infodata="";
+ var locallist = [];
+ updateTable(showtable,locallist);
+ function addData(){
+     if(infodata==""){
+         alert('先分析字段');
+         return;
+     }
+     var name = $('#txt_config_name')[0].value;
+     var path = $('#txt_config_path')[0].value;
+     var att = $('#txt_config_att')[0].value;
+     var deel = $('#txt_config_deel')[0].value;
+     var child = "1";
+     var selector = $('#txt_config_code')[0].value;
+     if (checkdata ==null || selector == "" || name==""||child=="") {
+         alert('先搜索数据');
+         return;
+     }
+     var attribs = {name:name,path:path,att:att,child:child,deel:deel,data:infodata};
+     alert(attribs)
+     locallist .push(attribs);
+     updateTable(showtable,locallist)
+
+ }
+  function deleteData(){
+      if(locallist.length>0){
+      locallist .splice(locallist.length-1,1);
+      }
+     updateTable(showtable,locallist)
+ }
+ //======================================================
+ //=======测试===============================================
+ //======================================================
+ //======================================================
+ //======================================================
+ function testData(){
+     var url = $('#txt_asin_code')[0].value;
+     if(url==""){
+         alert("缺少目标");
+         return;
+     }
+     var selector = $('#txt_config_code')[0].value;
+       if(selector==""){
+         alert("缺少选择器");
+         return;
+     }
+     alert("开始搜索");
+     lblfindinfo.textContent="开始搜索。。。";
+     url = encodeURI(url);
+     var obj =  {url:url,datatype:this.datatype,selector: selector,attribs:locallist};
+     this.getHtmlData("/testsearch", JSON.stringify(obj), this.showsearchdata);
+ }
+ function showsearchdata(data){
+     var d = data.data;
+     var infoarr = [];
+     for(var i = 0;i<d["length"];i++){
+         var obj = d[i];
+         var arr = [JSON.stringify(obj)];
+         infoarr.push(arr)
+     }
+      updateTable2(resulttable,infoarr);
+      if(d['length']>0){
+          document.getElementById('divupload').style.display="inline";
+      }
+ }
+  //======================================================
+ //=======上传===============================================
+ //======================================================
+ //======================================================
+ //======================================================
+ //======================================================
+ function uoloadData(){
+     var uploadid = $('#txt_upload_id')[0].value;
+     var unloadinfo = $('#txt_upload_info')[0].value;
+     if(unloadinfo==""){
+         alert("缺少信息");
+         return;
+     }
+     var url = $('#txt_asin_code')[0].value;
+     if(url==""){
+         alert("缺少目标");
+         return;
+     }
+     var selector = $('#txt_config_code')[0].value;
+       if(selector==""){
+         alert("缺少选择器");
+         return;
+     }
+     var arr=[];
+     
+     for(var i =0;i<locallist.length;i++){
+         var obji = locallist[i];
+         var newobj = {};
+         arr.push(newobj);
+         newobj.name=obji.name;
+         newobj.path=obji.path;
+         newobj.att=obji.att;
+         newobj.deel=obji.deel;
+         
+     }
+     lbluploaddata.textcontent="正在上传中。。。";
+     url = encodeURI(url);
+     var obj = {url:url,selector: selector,attribs:arr};
+     obj.id=uploadid;
+     obj.info=unloadinfo;
+     this.getHtmlData("/uploadsearchinfo", JSON.stringify(obj), this.showuploadresult);
+ }
+ function showuploadresult(data){
+     alert("上传结果:"+data.data);
+ } 
+ //=====下载数据检查=================================================
+ //======================================================
+ function downloadData(){
+     var uploadid = $('#txt_upload_id')[0].value;
+     if(uploadid==""){
+         alert("缺少id信息");
+         return;
+     }
+     var obj = {};
+     obj.id=uploadid;
+     this.getHtmlData("/downloadsearchinfo", JSON.stringify(obj), this.showDownloadData);
+ }
+ function showDownloadData(data){
+     var infodata = data.data;
+     alert ("更新成功"+infodata['info']);
+
+      $('#txt_asin_code')[0].value=infodata["url"];
+
+     $('#txt_upload_info')[0].value=infodata ["info"];
+     resulttable.innerHTML = "<span>没有数据!</span>";
+     $('#txt_config_code')[0].value = infodata["selector"];
+
+     locallist=[];
+
+     alert ("更新成功"+infodata["attribs"]);
+
+     var attribs = JSON.parse(infodata["attribs"]);
+     for(var i =0;i<attribs.length;i++){
+         locallist.push(attribs [i]);
+     }
+     updateTable(showtable,locallist);
+      divsub .style.display="inline";
+      divcheck .style.display="inline";
+ }</script>

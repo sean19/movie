@@ -1,0 +1,128 @@
+doctype html
+html(lang='en')
+
+    head
+        meta(charset='utf-8')
+        meta(http-equiv='X-UA-Compatible', content='IE=edge')
+        meta(name='viewport', content='width=device-width, initial-scale=1, shrink-to-fit=no')
+        meta(name='description', content='')
+        meta(name='author', content='')
+
+        include ../pug_includes/titleTV.pug
+
+        include ../pug_includes/css/core.pug
+
+        // Page level plugin CSS
+        link(href='vendor/datatables/dataTables.bootstrap4.css', rel='stylesheet')
+
+        include ../pug_includes/css/custom.pug
+
+    body#page-top.fixed-nav.sticky-footer.bg-dark
+        include ../pug_includes/navbar.pug
+        .content-wrapper
+            .container-fluid
+                // Breadcrumbs
+                ol.breadcrumb
+                    li.breadcrumb-item
+                        div
+                            label(id="txt_title") 直播
+                        div
+                            label(id="showTip") fill ASIN before getdata
+                        div(id="divProduct")
+
+include ../pug_includes/footer.pug
+
+include ../pug_includes/scroll-to-top.pug
+
+include ../pug_includes/modals/logout.pug
+
+include ../pug_includes/js/core.pug
+
+// Page level plugin JavaScript
+script(src='vendor/datatables/jquery.dataTables.js')
+script(src='vendor/datatables/dataTables.bootstrap4.js')
+
+include ../pug_includes/js/custom.pug
+
+
+// Custom scripts for this page
+script(src='js/sb-admin-datatables.min.js')
+script(src='js/sb-admin-datatables.min.js')
+script(src="js/DataProvider.js")
+script(src="js/FileResder.js")
+script(src="js/UtilMovie.js")
+script.
+
+    var btn = document.getElementById('btnGet');
+    var lbl = document.getElementById('showTip');
+    var divProduct= document.getElementById('divProduct');
+
+    var ASNICode = document.getElementById('ASNICode');
+    var ASNIModel = document.getElementById('ASNIModel');
+    var SalsesRank = document.getElementById('SalsesRank');
+    var Dimensions = document.getElementById('Dimensions');
+    var key;
+    var platform = '0';
+
+    init();
+    function init(){
+        key=getQueryString("key");
+        platform= getQueryString('platform');
+        var title = this.getTitle("title");
+
+        initTitle(document.getElementsByClassName('navbar-brand')[0], platform,"直播");
+        initTitle(document.getElementById('titletv'),platform,title);
+        showInfo(1);
+        var obj = {title:title,platform:platform};
+        this.searchData("/getTVInfoData", JSON.stringify(obj), "刷新成功",showInfo);
+    }
+
+    function showInfo(t){
+        switch (t){
+            case 0:
+                lbl.textContent = "数据加载中!";
+                divProduct.style.display="none";
+                break;
+            case 1:
+                lbl.textContent = "getting data please wait!";
+                divProduct.style.display="none";
+                break;
+            case 2:
+                lbl.textContent = "I'm ready!";
+                divProduct.style.display = "inline";
+                break;
+        }
+
+    }
+
+    function showProduct(data) {
+        var title = '直播';this.getTitle("title");
+        showInfo(2);
+        if (data.length > 0) {
+            divProduct.innerHTML = "<span>**************************</span>";
+        } else {
+            divProduct.innerHTML = "<span>没有数据!</span>";
+        }
+        for (var i = 0; i < data.length; i++) {
+            var frameDiv = document.createElement('div');
+            var framespan = document.createElement('span');
+            framespan.innerText = "------------\r\n";
+            frameDiv.append(framespan);
+
+            var frameway = document.createElement('span');
+            frameway.innerText = data[i]["playway"]+":";
+            frameDiv.append(frameway);
+
+
+            var frameA = document.createElement("button");
+            frameA.innerHTML = data[i]['title'];
+            var resultStr = this.cleanWord(title + ":" + data[i]['title'].replace("'", ""));
+            frameA.setAttribute("onclick", "onSeeMV('" + data[i]['href'] + "','" + resultStr + "')");
+            frameDiv.append(frameA);
+            divProduct.append(frameDiv)
+        }
+    }
+    function onSeeMV(link, title,from) {
+        window.location.href = '/cms/movie_online_see.html?platform='+platform+'&&link=' + link + "&&title=" + title+ "&&from=" +from+"&&key="+key;
+    }
+

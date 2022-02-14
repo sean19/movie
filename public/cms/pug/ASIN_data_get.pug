@@ -1,0 +1,171 @@
+doctype html
+html(lang='en')
+
+    head
+        meta(charset='utf-8')
+        meta(http-equiv='X-UA-Compatible', content='IE=edge')
+        meta(name='viewport', content='width=device-width, initial-scale=1, shrink-to-fit=no')
+        meta(name='description', content='')
+        meta(name='author', content='')
+
+        include ../pug_includes/title.pug
+
+        include ../pug_includes/css/core.pug
+
+        // Page level plugin CSS
+        link(href='vendor/datatables/dataTables.bootstrap4.css', rel='stylesheet')
+
+        include ../pug_includes/css/custom.pug
+
+
+    //----------------------------
+    body#page-top.fixed-nav.sticky-footer.bg-dark
+        div(class="modal fade" id="edit" tabindex="-1" role="dialog"
+        aria-labelledby="myModalLabel" aria-hidden="true"
+        style="position:fixed;top:20%")
+            div(class="modal-dialog")
+                div(class="modal-content")
+                    div(class="modal-header")
+                        h4(class="modal-title" id="info-dialog-title")
+                        button(type="button" class="close" data-dismiss="modal" aria-hidden="true") &times;
+                    div( id="edit_inputs" class="modal-body")
+                    div( class="modal-footer text-center")
+                        button(type="button" data-dismiss="modal" class="btn btn-outline-danger" id="btn-delete") 删除
+                            button(type="button" class="btn btn-default" data-dismiss="modal") 关闭
+                            button(type="button" data-dismiss="modal" class="btn btn-warning" id="btn-add") 添加
+                            button(type="button" data-dismiss="mSodal" class="btn btn-primary" id="btn-edit") 提交修改
+
+
+
+        include ../pug_includes/navbar.pug
+        .content-wrapper
+            .container-fluid
+                // Breadcrumbs
+                ol.breadcrumb
+                    li.breadcrumb-item
+                        div(id='divTitle') 数据获取
+                        div
+                            pan  请输入ASINCODE：
+                        div
+
+                            input(id="txt_asin_code",type="text")
+                        div
+                            label(id="showTip") fill ASIN before getdata
+                        div
+                            button(id ="btnGet" type="button" data-dismiss="modal" class="btn btn-outline-danger"  onclick="getDataFromAsin()") 获取数据
+                        div(id="divProduct")
+                            h2 product information:
+                            h5 ASNICode:
+                            label(id="ASNICode")
+                            h5 ASNIModel:
+                            label(id="ASNIModel")
+                            h5 SalsesRank:
+                            label(id="SalsesRank")
+                            h5 Dimensions:
+                            label(id="Dimensions")
+
+
+
+
+
+include ../pug_includes/footer.pug
+
+include ../pug_includes/scroll-to-top.pug
+
+include ../pug_includes/modals/logout.pug
+
+include ../pug_includes/js/core.pug
+
+// Page level plugin JavaScript
+script(src='vendor/datatables/jquery.dataTables.js')
+script(src='vendor/datatables/dataTables.bootstrap4.js')
+
+include ../pug_includes/js/custom.pug
+
+
+// Custom scripts for this page
+script(src='js/sb-admin-datatables.min.js')
+script(src='js/sb-admin-datatables.min.js')
+script(src="js/DataProvider.js")
+script(src="js/FileResder.js")
+script.
+    var btn = document.getElementById('btnGet');
+    var lbl = document.getElementById('showTip');
+    var divProduct= document.getElementById('divProduct');
+
+    var ASNICode = document.getElementById('ASNICode');
+    var ASNIModel = document.getElementById('ASNIModel');
+    var SalsesRank = document.getElementById('SalsesRank');
+    var Dimensions = document.getElementById('Dimensions');
+
+    showInfo(0);
+    function action(url, data, msg) {
+        $.ajax({
+            url: url,
+            data: data,
+            type: 'post',
+            cache: false,
+            dataType: 'json',
+            success: function (data) {
+                switch (data.error){
+                    case 0:
+                        showProduct(data.data);
+                        break;
+                    case 1002:
+                        showInfo(0);
+                        lbl.textContent = "ASIN ERR please try again!";
+                        break;
+                    default:
+                        showInfo(0);
+                        lbl.textContent = "ASIN ERR please try again!";
+                        break;
+                }
+
+            },
+            error: function () {
+                showInfo(0);
+                lbl.textContent = "please enter ASIN!";
+            }
+
+        });
+    }
+
+    //==============
+    function getDataFromAsin() {
+        var asincode = $('#txt_asin_code')[0].value;
+        if(asincode==""){
+            lbl.textContent = "please give me a ASINCode!";
+        }else{
+            showInfo(1);
+            var obj = {asincode: asincode};
+            this.action("/getDataFromAsin", JSON.stringify(obj), "刷新成功");
+        }
+    }
+    function showInfo(t){
+        switch (t){
+            case 0:
+                lbl.textContent = "I'm ready!";
+                btn.style.display = "inline";
+                divProduct.style.display="none";
+                break;
+            case 1:
+                lbl.textContent = "getting data please wait!";
+                btn.style.display = "none";
+                divProduct.style.display="none";
+                break;
+            case 2:
+                lbl.textContent = "I'm ready!";
+                btn.style.display = "inline";
+                divProduct.style.display = "inline";
+                break;
+        }
+
+    }
+    function showProduct(data){
+        showInfo(2);
+        ASNICode.textContent = data[0];
+        ASNIModel.textContent=data[1];
+        SalsesRank.textContent=data[2];
+        Dimensions.textContent=data[3];
+
+        }

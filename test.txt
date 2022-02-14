@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gbk" />
+<meta name="applicable-device" content="mobile">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
+<title>CCTV少儿频道直播 CCTV少儿频道在线直播观看</title>
+<meta name="keywords" content="CCTV少儿频道,CCTV少儿频道在线直播CCTV少儿频道在线直播网,CCTV少儿频道在线直播观看" />
+<META name="description" content="提供CCTV少儿频道在线直播,精彩节目尽在直播网!">
+<script type="text/javascript">(function(){var isMobile=/Android|webOS|iPhone|Windows Phone|iPad|BlackBerry|SymbianOS/i.test(navigator.userAgent);if(!isMobile&&window.location.hash!='#fromapp'){var e=window.location.href;var a=window.location.host;f=e.replace("http://"+a,"");window.location.href='http://www.hao5.net'+f}})();</script>
+<link rel="stylesheet" type="text/css" href="http://m.hao5.net/css/style.css?ver=1.0.1" />
+</head>
+<body onkeydown="onKeyDown()" oncontextmenu="return false" onselectstart="return false" ondragstart="return false" >
+<header class="header">
+	<a class="top-logo icon" href="http://m.hao5.net/"><span>电视直播</span></a>
+	<a class="top-menu icon" href="http://m.hao5.net/tvmobile.html"><span>菜单</span></a>
+	<a class="top-search icon" rel="nofollow" href="http://zhannei.baidu.com/cse/search?s=843966123008223317"><span>搜索</span></a>
+</header>
+    <div class="wrap">
+
+        <div class="video-box">
+	<p><iframe src="http://www.hao5.net/app/index.php?id=609017204" width="100%" height="250" frameborder="0" scrolling="no" name="tv"></iframe></p>
+		</div>
+  <div class="content">
+    <div class="big_title"><span></span><h2>频道简介</h2></div>
+	<div class="list-box J-medal">
+          <ul class="nav-type">
+		  <br>
+		       CCTV少儿频道于2003年12月28日开播，脱胎于原来的CCTV-7频道。CCTV-少儿频道的核心理念是尊重、支持、引导、快乐。即尊重少年儿童权益；支持少年儿童发掘自身潜能；引导少年儿童健康成长，让每个孩子都有最佳的人生开端，都有欢乐无限的生活空间。CCTV-少儿频道的主题词：引领成长、塑造未来。少儿频道将以先进的理念、全新的形象、国际化的标准，创办成国内一流、世界前列。CCTV-少儿频道每天播出总时长大约为19小时。
+
+<div class="banner"><script type="text/javascript" src="//1.hao5.net/production/u-p/static/mr/resource/o-mxry.js"></script></div>
+          <div class="clear">
+</div>
+          </ul>
+         </div>
+   </div>
+</div>
+<div class="footer_content">
+<CENTER><SPAN style="CLEAR: both; MARGIN-: 10px; FONT-SIZE: 14px; COLOR: #666666; LINE-HEIGHT: 20px; FONT-FAMILY: arial; HEIGHT: 10px; TEXT-ALIGN: center">
+CCTV少儿频道直播链接均收集自网络，非本站资源!
+<BR>&copy;2007-2020 <a name=baidusnap0></a>WWW.HAO5.NET,All Rights Reserved &nbsp; <br>
+</CENTER></div>
+</body>
+</html>
+<div style="display:none">
+<script src="https://s13.cnzz.com/z_stat.php?id=1274755333&web_id=1274755333" language="JavaScript"></script>
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?428b29bda761dfde39f426fa0ceb24ad";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+</div>
+
+

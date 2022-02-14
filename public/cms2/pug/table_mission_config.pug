@@ -1,0 +1,133 @@
+doctype html
+html(lang='en')
+
+  head
+    meta(charset='utf-8')
+    meta(http-equiv='X-UA-Compatible', content='IE=edge')
+    meta(name='viewport', content='width=device-width, initial-scale=1, shrink-to-fit=no')
+    meta(name='description', content='')
+    meta(name='author', content='')
+
+    include ../pug_includes/title.pug
+
+    include ../pug_includes/css/core.pug
+
+    // Page level plugin CSS
+    link(href='vendor/datatables/dataTables.bootstrap4.css', rel='stylesheet')
+
+    include ../pug_includes/css/custom.pug
+
+
+  //----------------------------
+  body#page-top.fixed-nav.sticky-footer.bg-dark
+    div(class="modal fade" id="edit" tabindex="-1" role="dialog"
+    aria-labelledby="myModalLabel" aria-hidden="true"
+    style="position:fixed;top:20%")
+      div(class="modal-dialog")
+        div(class="modal-content")
+          div(class="modal-header")
+            h4(class="modal-title" id="info-dialog-title")
+            button(type="button" class="close" data-dismiss="modal" aria-hidden="true") &times;
+          div( id="edit_inputs" class="modal-body")
+          div( class="modal-footer text-center")
+            button(type="button" data-dismiss="modal" class="btn btn-outline-danger" id="btn-delete") 删除
+              button(type="button" class="btn btn-default" data-dismiss="modal") 关闭
+              button(type="button" data-dismiss="modal" class="btn btn-warning" id="btn-add") 添加
+              button(type="button" data-dismiss="modal" class="btn btn-primary" id="btn-edit") 提交修改
+
+
+
+    include ../pug_includes/navbar.pug
+    .content-wrapper
+      .container-fluid
+        // Breadcrumbs
+        ol.breadcrumb
+          li.breadcrumb-item
+            div(id='divTitle') 任务设计--
+            div
+                button(type="button" data-dismiss="modal" class="btn btn-outline-danger"  onclick="clearWave()") 清除本波
+                button(type="button" data-dismiss="modal" class="btn btn-outline-danger"  onclick="loadXml()") 导入
+                input(type="file" id="ipt")
+
+          li.breadcrumb-item.active <Tables></Tables>
+        // Example DataTables Card
+        .card.mb-3
+          .card-header
+            i.fa.fa-table
+            |出鱼波数
+            div(id ="divWave")
+
+
+          .card-body
+            .table-responsive
+              table#dataTable.table.table-bordered(width='100%', cellspacing='0')
+                thead
+                  tr
+                    -var dataarr = ["id","mission_type","mission_icon","mission_description","mission_total_num","rewardstr","mission_link","ps","isuse","mission_name"];
+                      each val in dataarr
+                          th=val
+                tfoot
+                  tr
+                      each val in dataarr
+                          th=val
+                tbody
+
+          .card-footer.small.text-muted
+            | Updated yesterday at 11:59 PM
+      // /.container-fluid
+      // /.content-wrapper
+
+      include ../pug_includes/footer.pug
+
+      include ../pug_includes/scroll-to-top.pug
+
+      include ../pug_includes/modals/logout.pug
+
+      include ../pug_includes/js/core.pug
+
+      // Page level plugin JavaScript
+      script(src='vendor/datatables/jquery.dataTables.js')
+      script(src='vendor/datatables/dataTables.bootstrap4.js')
+
+      include ../pug_includes/js/custom.pug
+
+
+      // Custom scripts for this page
+      script(src='js/sb-admin-datatables.min.js')
+script(src='js/sb-admin-datatables.min.js')
+script(src="js/DataProvider.js")
+script(src="js/FileResder.js")
+script.
+    var myurl = "/cms/fish_out_tables.html?";
+    var tableName = "MissionConfig";
+    var fixData = {tableName:tableName};
+    setColums(["id","mission_type","mission_icon","mission_description","mission_total_num","rewardstr","mission_link","ps","isuse","mission_name"]);
+
+
+    showHead();
+    function showHead()
+    {
+        var str= "任务配置";
+
+        $('#divTitle').append(str);
+    }
+
+    function clearWave()
+    {
+        doAjax(getAllObj(),"/tableClear","清除成功");
+    }
+    initURL("/tableGet","/intemUpdate","/itemDelete","/itemAdd");
+
+    addInputs(1);
+    loadData(this.fixData);
+
+    function onshowPage(idx) {
+        var uu = this.refreshurl;
+        window.location.href = "/cms/table_mission_config.html?roomId=" + roomId + "&waveId=" + idx;
+    }
+
+
+
+
+
+

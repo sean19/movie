@@ -1,0 +1,5 @@
+rdr pass on lo0 inet proto tcp from any to 127.0.0.1 port 80 -> 127.0.0.1 port 8080
+rdr pass on en0 inet proto tcp from any to 192.168.1.101 port 80 -> 192.168.1.101 port 8080
+rdr pass on en0 inet proto tcp from any to 192.168.1.102 port 80 -> 192.168.1.102 port 8080
+rdr pass on en0 inet proto tcp from any to 192.168.1.103 port 80 -> 192.168.1.103 port 8080
+rdr pass on en0 inet proto tcp from any to 192.168.1.104 port 80 -> 192.168.1.104 port 8080

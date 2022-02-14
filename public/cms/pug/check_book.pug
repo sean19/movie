@@ -1,0 +1,193 @@
+doctype html
+html(lang='en')
+
+    head
+        meta(charset='utf-8')
+        meta(http-equiv='X-UA-Compatible', content='IE=edge')
+        meta(name='viewport', content='width=device-width, initial-scale=1, shrink-to-fit=no')
+        meta(name='description', content='')
+        meta(name='author', content='')
+
+        include ../pug_includes/titleTV.pug
+
+        include ../pug_includes/css/core.pug
+
+        // Page level plugin CSS
+        link(href='vendor/datatables/dataTables.bootstrap4.css', rel='stylesheet')
+
+        include ../pug_includes/css/custom.pug
+
+
+    //----------------------------
+    body#page-top.fixed-nav.sticky-footer.bg-dark
+        div(class="modal fade" id="edit" tabindex="-1" role="dialog"
+        aria-labelledby="myModalLabel" aria-hidden="true"
+        style="position:fixed;top:20%")
+            div(class="modal-dialog")
+                div(class="modal-content")
+                    div(class="modal-header")
+                        h4(class="modal-title" id="info-dialog-title")
+                        button(type="button" class="close" data-dismiss="modal" aria-hidden="true") &times;
+                    div( id="edit_inputs" class="modal-body")
+                    div( class="modal-footer text-center")
+                        button(type="button" data-dismiss="modal" class="btn btn-outline-danger" id="btn-delete") 删除
+                            button(type="button" class="btn btn-default" data-dismiss="modal") 关闭
+                            button(type="button" data-dismiss="modal" class="btn btn-warning" id="btn-add") 添加
+                            button(type="button" data-dismiss="mSodal" class="btn btn-primary" id="btn-edit") 提交修改
+
+
+
+        include ../pug_includes/navbar.pug
+        .content-wrapper
+            .container-fluid
+                // Breadcrumbs
+                ol.breadcrumb
+                    li.breadcrumb-item
+                        div
+                            pan  数据调配：
+                        div
+                            label(id="showTip") 请输入网页内容
+                        div(id="input")
+                            label id &emsp;
+                            input(id="txt_id",type="text")
+                            span &emsp;&emsp;
+                            button(id ="btnGet" type="button" data-dismiss="modal" class="btn btn-outline-danger"  onclick="getconfigdata()") 加载数据
+                            span &emsp;&emsp;
+                            button(id ="btnUpdate" type="button" data-dismiss="modal" class="btn btn-outline-danger"  onclick="updateconfigdata()") 上传数据
+                        div
+                         label *******************数据信息***********
+                        div
+                            label 平台id &emsp;
+                            input(id="txt_platformid",type="text")
+                            label  &emsp;上传时候为空代表是新建立内容
+
+                        div
+                            label 名称 &emsp;&emsp;
+                            input(id="txt_pname",type="text")
+                        div
+                            label 主页 &emsp;&emsp;
+                            input(id="txt_host",type="text")
+                        div
+                            label 搜索字符&emsp;
+                            input(id="txt_searchstr",type="text")
+                            label 搜索内容列表的爬虫id
+                        div
+                            label 搜索1/2&emsp;
+                            input(id="txt_searchinfo",type="text")
+                            label 搜索内容列表的爬虫id
+                        div
+                            label 搜索2/2&emsp;
+                            input(id="txt_searchpage",type="text")
+                            label 搜索页面按钮的爬虫id
+                        div
+                            label 章节1/2&emsp;
+                            input(id="txt_chapterpage",type="text")
+                            label 获取章节【列表】的爬虫id
+                        div
+                            label 章节2/2&emsp;
+                            input(id="txt_chapterselect",type="text")
+                            label 获取章节列表的【页码】的爬虫id
+                        div
+                            label 标题1/3&emsp;
+                            input(id="txt_infotitle",type="text")
+                            label 获取book【内容】的爬虫id
+                        div
+                            label option1[]2/3&emsp;
+                            input(id="txt_infooption1",type="text")
+                            label 获取book【页码1】的爬虫id
+                        div
+                            label option2[]2/3&emsp;
+                            input(id="txt_infooption2",type="text")
+                            label 获取book【页码2】的爬虫id
+                        div
+                            label 内容3/3&emsp;
+                            input(id="txt_infotext",type="text")
+                            label 获取book【内容】的爬虫id
+                        div
+                            label 创建时间&emsp;
+                            input(id="txt_create_time",type="text")
+                        div
+                            label 更新时间&emsp;
+                            input(id="txt_update_time",type="text")
+
+include ../pug_includes/footer.pug
+
+include ../pug_includes/scroll-to-top.pug
+
+include ../pug_includes/modals/logout.pug
+
+include ../pug_includes/js/core.pug
+
+// Page level plugin JavaScript
+script(src='vendor/datatables/jquery.dataTables.js')
+script(src='vendor/datatables/dataTables.bootstrap4.js')
+
+include ../pug_includes/js/custom.pug
+
+
+// Custom scripts for this page
+script(src='js/sb-admin-datatables.min.js')
+script(src='js/sb-admin-datatables.min.js')
+script(src="js/DataProvider.js")
+script(src="js/FileResder.js")
+script(src="js/UtillHtmlCheck.js")
+script.
+
+
+    var showTip= document.getElementById('showTip');
+
+
+    
+
+    
+
+    //==============
+    function getconfigdata() {
+        var txt_id = $('#txt_id')[0].value;
+        if (txt_id == "" ) {
+            showTip.textContent = "请输入id";
+            return;
+        }
+        var obj = {keyword: txt_id};
+        this.getHtmlData("/getbookconfig", JSON.stringify(obj), this.showHtmlData);
+    }
+   
+    function showHtmlData(data){
+        $('#txt_'+"platformid")[0].value=data.data["platformid"];
+        $('#txt_'+"pname")[0].value=data.data["pname"];
+        $('#txt_'+"host")[0].value=data.data["host"];
+        $('#txt_'+"searchstr")[0].value=data.data["searchstr"];
+        $('#txt_'+"searchinfo")[0].value=data.data["searchinfo"];
+        $('#txt_'+"searchpage")[0].value=data.data["searchpage"];
+        $('#txt_'+"chapterpage")[0].value=data.data["chapterpage"];
+        $('#txt_'+"chapterselect")[0].value=data.data["chapterselect"];
+        $('#txt_'+"infotitle")[0].value=data.data["infotitle"];
+        $('#txt_'+"infooption1")[0].value=data.data["infooption1"];
+        $('#txt_'+"infooption2")[0].value=data.data["infooption2"];
+        $('#txt_'+"infotext")[0].value=data.data["infotext"];
+        $('#txt_'+"update_time")[0].value=data.data["update_time"];
+        $('#txt_'+"create_time")[0].value=data.data["create_time"];
+    }
+    function updateconfigdata(){
+        var obj = {};
+        obj["id"]=$('#txt_'+"id")[0].value;
+        obj["platformid"]=$('#txt_'+"platformid")[0].value;
+        obj["pname"]=$('#txt_'+"pname")[0].value;
+        obj["host"]=$('#txt_'+"host")[0].value;
+        obj["searchstr"]=$('#txt_'+"searchstr")[0].value;
+        obj["searchinfo"]=$('#txt_'+"searchinfo")[0].value;
+        obj["searchpage"]=$('#txt_'+"searchpage")[0].value;
+        obj["chapterpage"]=$('#txt_'+"chapterpage")[0].value;
+        obj["chapterselect"]=$('#txt_'+"chapterselect")[0].value;
+        obj["infotitle"]=$('#txt_'+"infotitle")[0].value;
+        obj["infooption1"]=$('#txt_'+"infooption1")[0].value;
+        obj["infooption2"]=$('#txt_'+"infooption2")[0].value;
+        obj["infotext"]=$('#txt_'+"infotext")[0].value;
+        this.getHtmlData("/updatebookconfig", JSON.stringify(obj), this.updateok);
+    }
+    function updateok(data){
+        alert(data.data)
+    }
+   
+   
+   

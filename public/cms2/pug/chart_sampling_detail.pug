@@ -1,0 +1,184 @@
+doctype html
+html(lang='en')
+
+    head
+        meta(charset='utf-8')
+        meta(http-equiv='X-UA-Compatible', content='IE=edge')
+        meta(name='viewport', content='width=device-width, initial-scale=1, shrink-to-fit=no')
+        meta(name='description', content='')
+        meta(name='author', content='')
+
+        include ../pug_includes/title.pug
+
+        include ../pug_includes/css/core.pug
+
+        // Page level plugin CSS
+        link(href='vendor/datatables/dataTables.bootstrap4.css', rel='stylesheet')
+
+        include ../pug_includes/css/custom.pug
+
+
+    //----------------------------
+    body#page-top.fixed-nav.sticky-footer.bg-dark
+
+        include ../pug_includes/navbar.pug
+        .content-wrapper
+            .container-fluid
+                // Breadcrumbs
+                ol.breadcrumb
+                    li.breadcrumb-item
+                        div(id='divTitle') 实时数据
+                    li.breadcrumb-item.active <Tables></Tables>
+                // Example DataTables Card
+                .card.mb-3
+                    .card-header
+                        i.fa.fa-table
+                        |房间情况
+                        div(id ="divWave")
+                            span 房间：
+                            select(id="selectType" onchange="initSelctRoomId()")
+                            span [----]id：
+                            select(id="selectRoomId")
+                            span [----]
+                            button(id="btn_show_all" onclick="showAll()") 查看所有
+                        div(id ="divWave1")
+                            span 开始时间：
+                            input(id="datetimepicker",type="text")
+                            span [----]结束时间：
+                            input(id="datetimepicker1",type="text")
+                            span [----]
+                            button(id="btn_show" onclick="showLine()") 查看
+
+
+                .card-body
+                       canvas#myAreaChart(width='100%', height='30')
+
+                .card-footer.small.text-muted
+                    | Updated yesterday at 11:59 PM
+
+            include ../pug_includes/footer.pug
+
+            include ../pug_includes/scroll-to-top.pug
+
+            include ../pug_includes/modals/logout.pug
+
+            include ../pug_includes/js/core.pug
+
+            // Page level plugin JavaScript
+            script(src='vendor/datatables/jquery.dataTables.js')
+            script(src='vendor/datatables/dataTables.bootstrap4.js')
+
+            include ../pug_includes/js/custom.pug
+
+
+            // Custom scripts for this page
+            script(src='js/sb-admin-datatables.min.js')
+    script(src='js/sb-admin-datatables.min.js')
+    script(src='js/bootstrap-datetimepicker.js')
+    link(href='css/bootstrap-datetimepicker.css', rel='stylesheet')
+    script(src='vendor/chart.js/Chart.min.js')
+    script(src='js/DataChart.js')
+    script.
+        var roomdatas = [];
+        function addOption(sel, text, value) {
+            var opt = new Option(text, value);
+            sel.options.add(opt);
+        }
+        function initSelects(){
+            initSelectRoomType();
+            initSelctRoomId();
+        }
+        function initSelectRoomType(){
+            var selectType = $('#selectType')[0];
+            var roomtypearr = [];
+            for(var i = 0 ;i<roomdatas.length;i++){
+                var obj = roomdatas[i];
+                var roomtypeinfo = obj["roomType"];
+                if(roomtypearr.indexOf(roomtypeinfo) == -1){
+                    roomtypearr.push(roomtypeinfo);
+                    addOption(selectType,roomtypeinfo,roomtypeinfo);
+                }
+            }
+
+        }
+        function initSelctRoomId(){
+            var selectType = $('#selectType')[0];
+            var selectRoomId = $('#selectRoomId')[0];
+            selectRoomId.options.length=0;
+            var type = selectType.value;
+            var roomidearr = [];
+            for (var i = 0; i < roomdatas.length; i++) {
+                var obj = roomdatas[i];
+                var roomtypeinfo = obj["roomType"];
+                var roomIdinfo = obj["roomId"];
+                if (roomidearr.indexOf(roomIdinfo) == -1 && type==roomtypeinfo) {
+                    roomidearr.push(roomIdinfo);
+                    addOption(selectRoomId, roomIdinfo, roomIdinfo);
+                }
+            }
+        }
+        getRoomData();
+        function getRoomData()
+        {
+            $.ajax({
+                url: "/GetRoomSamplingConfig",
+                data: {},
+                type: 'post',
+                cache: false,
+                dataType: 'json',
+                success: function (data) {
+
+                    if(notLogin(data) == false)
+                    {
+                        roomdatas = data.data;
+                        initSelects();
+                    }}});
+        }
+
+        function showLine(){
+            var dataapp ={tableName: "RoomSamplingPeriodDetail"
+                , roomType: $('#selectType')[0].value
+                , startTime: $('#datetimepicker')[0].value
+                , endTime: $('#datetimepicker1')[0].value};
+
+            showChart(
+                "/getChartRoomSamplingPeriodDetail",
+                dataapp,
+                "createTime",
+                [
+                    {lable: "goldFire", datakey: "goldFire", type: "", color: "rgba(0,117,0,12)"},
+                    {lable: "goldReward", datakey: "goldReward", type: "", color: "rgba(255,0,0,255)"},
+                    {lable: "goldIncome", datakey: "goldIncome", type: "sam", color: "rgba(12,117,216,255)"}
+                ]);
+        }
+        function showAll(){
+            showChart(
+                "/tableGet",
+                {tableName: "RoomSamplingPeriodDetail", roomType: $('#selectType')[0].value},
+                "createTime",
+                [
+                    {lable: "goldFire", datakey: "goldFire", type: "", color: "rgba(0,117,0,12)"},
+                    {lable: "goldReward", datakey: "goldReward", type: "", color: "rgba(255,0,0,255)"},
+                    {lable: "goldIncome", datakey: "goldIncome", type: "sam", color: "rgba(12,117,216,255)"}
+                ]);
+        }
+
+        initTimePicker();
+        function initTimePicker()
+        {
+            $('#datetimepicker').datetimepicker({
+                format: 'yyyy-mm-dd hh:ii',
+                todayBtn: true,
+                language:'zh-CN',
+                autoclose:true,
+
+
+            });
+            $('#datetimepicker1').datetimepicker({
+                format: 'yyyy-mm-dd hh:ii',
+                todayBtn: true,
+                language: 'zh-CN',
+                autoclose: true,
+
+            });
+        }

@@ -1,0 +1,226 @@
+doctype html
+html(lang='en')
+
+    head
+        meta(charset='utf-8')
+        meta(http-equiv='X-UA-Compatible', content='IE=edge')
+        meta(name='viewport', content='width=device-width, initial-scale=1, shrink-to-fit=no')
+        meta(name='description', content='')
+        meta(name='author', content='')
+
+        include ../pug_includes/title.pug
+
+        include ../pug_includes/css/core.pug
+
+        // Page level plugin CSS
+        link(href='vendor/datatables/dataTables.bootstrap4.css', rel='stylesheet')
+
+        include ../pug_includes/css/custom.pug
+
+
+    //----------------------------
+    body#page-top.fixed-nav.sticky-footer.bg-dark
+        div(class="modal fade" id="edit" tabindex="-1" role="dialog"
+        aria-labelledby="myModalLabel" aria-hidden="true"
+        style="position:fixed;top:20%")
+            div(class="modal-dialog")
+                div(class="modal-content")
+                    div(class="modal-header")
+                        h4(class="modal-title" id="info-dialog-title")
+                        button(type="button" class="close" data-dismiss="modal" aria-hidden="true") &times;
+                    div( id="edit_inputs" class="modal-body")
+                    div( class="modal-footer text-center")
+                        button(type="button" data-dismiss="modal" class="btn btn-outline-danger" id="btn-delete") 删除
+                            button(type="button" class="btn btn-default" data-dismiss="modal") 关闭
+                            button(type="button" data-dismiss="modal" class="btn btn-warning" id="btn-add") 添加
+                            button(type="button" data-dismiss="mSodal" class="btn btn-primary" id="btn-edit") 提交修改
+
+
+
+        include ../pug_includes/navbar.pug
+        .content-wrapper
+            .container-fluid
+                // Breadcrumbs
+                ol.breadcrumb
+                    li.breadcrumb-item
+                        div(id='divTitle') 数据配置--
+                        div
+                            pan [--]
+                            button(type="button" data-dismiss="modal" class="btn btn-outline-danger"  onclick="initRedisConfig()") 数据库加载配置到redis
+                    li.breadcrumb-item.active <Tables></Tables>
+                // Example DataTables Card
+                .card.mb-3
+                    .card-header
+                        i.fa.fa-table
+                        |系统设计
+                        div(id ="divWave")
+
+
+                    .card-body
+                        .table-responsive
+                            table#dataTable.table.table-bordered(width='100%', cellspacing='0')
+                                thead
+                                    tr
+                                        -var dataarr = ["id","name","info","value","key"];//hy 表头的标示字段
+                                        each val in dataarr
+                                            th=val
+                                tfoot
+                                    tr
+                                        each val in dataarr
+                                            th=val
+                                tbody
+
+                    .card-footer.small.text-muted
+                        | Updated yesterday at 11:59 PM
+
+
+include ../pug_includes/footer.pug
+
+include ../pug_includes/scroll-to-top.pug
+
+include ../pug_includes/modals/logout.pug
+
+include ../pug_includes/js/core.pug
+
+// Page level plugin JavaScript
+script(src='vendor/datatables/jquery.dataTables.js')
+script(src='vendor/datatables/dataTables.bootstrap4.js')
+
+include ../pug_includes/js/custom.pug
+
+
+// Custom scripts for this page
+script(src='js/sb-admin-datatables.min.js')
+script(src='js/sb-admin-datatables.min.js')
+script(src="js/DataProvider.js")
+script(src="js/FileResder.js")
+script(src='js/bootstrap-datetimepicker.js')
+link(href='css/bootstrap-datetimepicker.css', rel='stylesheet')
+script.
+    setColums(["id","name","info","value","key"]);//hy 展示的数据库字段
+    var myurl = "/cms/table_sys_config.html";//hy 对应的页面
+    var tableName = "SysConfig";//hy orm模型里面对应的模型名
+    var fixData = {tableName:tableName};
+    showHead();
+    function showHead()
+    {
+        var str= "道具配置";//hy 修改head
+
+        $('#divTitle').append(str);
+    }
+    function clearWave()
+    {
+        doAjax(getAllObj(),"/tableClear","清除成功");
+    }
+    initURL("/tableGet","/intemUpdate","/itemDelete","/itemAdd");
+    addInputs(1);
+    loadData(this.fixData);
+    function resetTime() {
+        var str =$('#datetimepicker')[0].value;
+        if(str!=""){
+            doAjax({time:$('#datetimepicker')[0].value},"/resetTime","重置成功");
+        }
+    }
+    // initTimePicker();
+    function initTimePicker() {
+        $('#datetimepicker').datetimepicker({
+            format: 'yyyy-mm-dd hh:ii',
+            todayBtn: true,
+            language: 'zh-CN',
+            autoclose: true,
+
+
+        });
+    }
+
+    //==============
+    // getsysTime();
+    function showTime(str) {
+        $('#datetimepicker')[0].value=(str);
+    }
+    function getsysTime() {
+        $.ajax({
+            url: "/getSysSetTime",
+            data: {time:1},
+            type: 'post',
+            cache: false,
+            dataType: 'json',
+            success: function (data) {
+                console.log('data:'+JSON.stringify(data));
+                if (data.error == 0) {
+                    showTime(data.message);
+                } else if (data.error == 401) {
+                    showAlert('错误，请稍后重试');
+                } else {
+                    showAlert('错误，请稍后重试');
+                }
+            },
+            error: function () {
+                showAlert('错误，请稍后重试');
+            }
+        });
+    }
+    function action(url,data,msg){
+        $.ajax({
+            url: url,
+            data: data,
+            type: 'post',
+            cache: false,
+            dataType: 'json',
+            success: function (data) {
+                if (data.error == 0) {
+                    showAlert(msg);
+                } else if (data.error == 401) {
+                    showAlert('错误，请稍后重试');
+                } else {
+                    showAlert('错误，请稍后重试');
+                }
+            },
+            error: function () {
+                showAlert('错误，请稍后重试');
+            }
+        });
+    }
+
+    //===================
+    function clearRds() {
+        this.action("/clearRds",{time:1},"清理成功");
+    }
+    function clearUserDataInDB() {
+        this.action("/clearUserDataInDB",{time:1},"清理成功");
+    }
+    function restartSys() {
+        this.action("/restartSys",{time:1}, "清理成功");
+    }
+
+
+    function saveAllUser2DB(){
+        this.action("/saveAllUser2DB",{time:1},"刷新成功");
+    }
+
+    function onlineUserData2RDS(){
+        this.action("/onlineUserData2RDS",{time:1},"刷新成功");
+    }
+    //===================
+    function updateRanking() {
+        this.action("/updateRanking",{time:1},"刷新成功");
+    }
+    function initRedisConfig() {
+        this.action("/initRedisConfig",{time:1},"刷新成功");
+    }
+    function setServerLitenStart() {
+        this.action("/setServerLiten",{ty:1},"刷新成功");
+    }
+    function setServerLitenStop() {
+        this.action("/setServerLiten", {ty: 0}, "刷新成功");
+    }
+    function killUserOnline() {
+        this.action("/killUserOnline", {}, "刷新成功");
+    }
+    function recharge() {
+        var uid = $('#txtuid')[0].value;
+        var shopid = $('#txtshopid')[0].value;
+        if(uid=="" || shopid=="")return;
+
+        this.action("/recharge", JSON.stringify('{"uid":'+uid+',"shop_id":'+shopid+',"pay_type":'+'10}'), "刷新成功");
+    }

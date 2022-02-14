@@ -1,0 +1,142 @@
+doctype html
+html(lang='en')
+
+    head
+        meta(charset='utf-8')
+        meta(http-equiv='X-UA-Compatible', content='IE=edge')
+        meta(name='viewport', content='width=device-width, initial-scale=1, shrink-to-fit=no')
+        meta(name='description', content='')
+        meta(name='author', content='')
+
+        include ../pug_includes/titleTV.pug
+
+        include ../pug_includes/css/core.pug
+
+        // Page level plugin CSS
+        link(href='vendor/datatables/dataTables.bootstrap4.css', rel='stylesheet')
+
+        include ../pug_includes/css/custom.pug
+    body#page-top.fixed-nav.sticky-footer.bg-dark
+        div(class="modal fade" id="edit" tabindex="-1" role="dialog"
+        aria-labelledby="myModalLabel" aria-hidden="true"
+        style="position:fixed;top:20%")
+            div(class="modal-dialog")
+                div(class="modal-content")
+        div(class="modal fade" id="edit2" tabindex="-1" role="dialog"
+            aria-labelledby="myModalLabel" aria-hidden="true"
+            style="position:fixed;top:20%")
+            div(class="modal-dialog")
+                div(class="modal-content")
+                    div(class="modal-header")
+                        h5(class="modal-title" id="info-dialog-title" ) 查看小说       
+                        button(type="button" class="close" data-dismiss="modal" aria-hidden="true") &times;
+                    div
+                        h6(class="modal-title" id="info-dialog-master" ) 信息  
+                        h13(class="nodel-info" id="info-dialog-info" ) 信息 
+                    div
+                    div(style="align:center")
+                        button(type="button" class="btn btn-primary" data-dismiss="modal" aria-hidden="true" style=";width:200;height:50px;display:block;margin:0 auto" onclick="onseebookbtnclick()") 开始阅读
+                    div
+                        span &nbsp&nbsp&nbsp
+                    div
+                        button(type="button" class="btn btn-outline-danger" data-dismiss="modal" aria-hidden="true" style=";width:150px;height:30px;display:block;margin:0 auto" onclick="deletetemp()") 从历史记录里删除
+
+                    div
+                        span &nbsp&nbsp&nbsp
+
+
+
+
+
+        include ../pug_includes/navbar.pug
+        .content-wrapper
+            .container-fluid
+                // Breadcrumbs
+                ol.breadcrumb
+                    li.breadcrumb-item
+                        div
+                            pan  小说搜索：
+
+                        div(id="divinput" )
+                            input(id="txt_asin_code",type="text")
+                            span &emsp;&emsp;
+                            button(id ="btnGet" type="button" data-dismiss="modal" class="btn btn-outline-danger"  onclick="getDataFromM11K(1)") 获取数据
+                        div
+                            label(id="showTip") -------------
+                        div(id="divOption")
+                        div(id="divProduct")
+
+include ../pug_includes/footer.pug
+
+include ../pug_includes/scroll-to-top.pug
+
+include ../pug_includes/modals/logout.pug
+
+include ../pug_includes/js/core.pug
+
+// Page level plugin JavaScript
+script(src='vendor/datatables/jquery.dataTables.js')
+script(src='vendor/datatables/dataTables.bootstrap4.js')
+
+include ../pug_includes/js/custom.pug
+
+
+// Custom scripts for this page
+script(src='js/sb-admin-datatables.min.js')
+script(src='js/sb-admin-datatables.min.js')
+script(src="js/DataProvider.js")
+script(src="js/FileResder.js")
+script(src="js/UtilBook.js")
+script.
+
+    var btn = document.getElementById('btnGet');
+    var lbl = document.getElementById('showTip');
+    var divProduct= document.getElementById('divProduct');
+    var divOption= document.getElementById('divOption');
+    var divinput= document.getElementById('divinput');
+
+    var ASNICode = document.getElementById('ASNICode');
+    var ASNIModel = document.getElementById('ASNIModel');
+    var SalsesRank = document.getElementById('SalsesRank');
+    var Dimensions = document.getElementById('Dimensions');
+
+    init();
+    function init(){
+        initTitle(document.getElementsByClassName('navbar-brand')[0],"小说");
+        initTitle(document.getElementById('titletv'),"小说");
+        divinput.style.display="inline";
+        lbl.textContent = "请输入关键字!";
+        showlocalList();
+    }
+
+
+    //==============
+    function getDataFromM11K(ty) {
+        try{
+            var kw = $('#txt_asin_code')[0].value;
+            if (kw == "" && type == "1") {
+                lbl.textContent = "请输入关键字!";
+            } else {
+                divProduct.innerHTML = "<span>**************************</span>";
+                divOption.innerHTML = "";
+                this.onShowPageOption("",kw, "")
+            }
+        }catch (e) {
+            lbl.textContent = e.toString();
+        }
+
+    }
+    function onShowPageOption(platform,kw,page){
+        var keyword = encodeURI(kw);
+        lbl.textContent = "正在搜索..."+keyword;
+        var obj = {keyword: keyword,platform:platform, page:page};
+        this.searchData("/getBookSearchData", JSON.stringify(obj), "刷新成功","",this.showProduct);
+    }
+
+    function showProduct(data,t){
+        lbl.textContent=(t?t:"完成搜索：platform=")+data["platform"];
+        tableinfo(data.data);
+
+    }
+   
+  

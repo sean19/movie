@@ -1,0 +1,166 @@
+doctype html
+html(lang='en')
+
+  head
+    meta(charset='utf-8')
+    meta(http-equiv='X-UA-Compatible', content='IE=edge')
+    meta(name='viewport', content='width=device-width, initial-scale=1, shrink-to-fit=no')
+    meta(name='description', content='')
+    meta(name='author', content='')
+
+    include ../pug_includes/title.pug
+
+    include ../pug_includes/css/core.pug
+
+    // Page level plugin CSS
+    link(href='vendor/datatables/dataTables.bootstrap4.css', rel='stylesheet')
+
+    include ../pug_includes/css/custom.pug
+
+
+  //----------------------------
+  body#page-top.fixed-nav.sticky-footer.bg-dark
+    div(class="modal fade" id="edit" tabindex="-1" role="dialog"
+    aria-labelledby="myModalLabel" aria-hidden="true"
+    style="position:fixed;top:20%")
+      div(class="modal-dialog")
+        div(class="modal-content")
+          div(class="modal-header")
+            h4(class="modal-title" id="info-dialog-title")
+            button(type="button" class="close" data-dismiss="modal" aria-hidden="true") &times;
+          div( id="edit_inputs" class="modal-body")
+          div( class="modal-footer text-center")
+            button(type="button" data-dismiss="modal" class="btn btn-outline-danger" id="btn-delete") 删除
+              button(type="button" class="btn btn-default" data-dismiss="modal") 关闭
+              button(type="button" data-dismiss="modal" class="btn btn-warning" id="btn-add") 添加
+              button(type="button" data-dismiss="modal" class="btn btn-primary" id="btn-edit") 提交修改
+
+
+
+    include ../pug_includes/navbar.pug
+    .content-wrapper
+      .container-fluid
+        // Breadcrumbs
+        ol.breadcrumb
+          li.breadcrumb-item
+            div(id='divTitle' )
+                i.fa-2x
+                |路线设计--
+            div
+                button(type="button" data-dismiss="modal" class="btn btn-outline-danger"  onclick="clearWave()") 清除本页数据
+                button(type="button" data-dismiss="modal" class="btn btn-outline-danger"  onclick="loadXml()") 导入
+                input(type="file" id="ipt")
+                button(type="button" data-dismiss="modal" class="btn btn-outline-danger"  onclick="checkGroup()") 查看分组设计
+          li.breadcrumb-item.active <Tables></Tables>
+        // Example DataTables Card
+        .card.mb-3
+          .card-header
+            i.fa.fa-table
+            |出鱼波数
+            div(id ="divWave" )
+
+
+          .card-body
+            .table-responsive
+              table#dataTable.table.table-bordered(width='100%', cellspacing='0')
+                thead
+                  tr
+                    -var dataarr = ["id","roomId","waveId","callNum","fishType","fishIndex","fishTime","fishCount","delayTime","ps","award","road"];
+                      each val in dataarr
+                          th=val
+                tfoot
+                  tr
+                      each val in dataarr
+                          th=val
+                tbody
+
+          .card-footer.small.text-muted
+            | Updated yesterday at 11:59 PM
+      // /.container-fluid
+      // /.content-wrapper
+
+      include ../pug_includes/footer.pug
+
+      include ../pug_includes/scroll-to-top.pug
+
+      include ../pug_includes/modals/logout.pug
+
+      include ../pug_includes/js/core.pug
+
+      // Page level plugin JavaScript
+      script(src='vendor/datatables/jquery.dataTables.js')
+      script(src='vendor/datatables/dataTables.bootstrap4.js')
+
+      include ../pug_includes/js/custom.pug
+
+
+      // Custom scripts for this page
+      script(src='js/sb-admin-datatables.min.js')
+script(src='js/sb-admin-datatables.min.js')
+script(src="js/DataProvider.js")
+script(src="js/FileResder.js")
+script.
+    var myurl = "/cms/fish_out_tables.html?";
+    var tableName = "FishOutTestTable";
+    var roomId = getQueryString("roomId");
+    var waveId = getQueryString("waveId");
+    var fixData = {param1:roomId,param2:waveId,tableName:tableName};
+    setColums(["id","roomId","waveId","callNum","fishType","fishIndex","fishTime","fishCount","delayTime","ps","award","road"]);
+
+
+    showHead();
+    function showHead()
+    {
+        var str= "1111";
+        switch(roomId)
+        {
+            case "0":
+                str = "阳光沙滩";
+                break;
+            case "1":str="海底遗迹";break;
+
+            case "2":str="深海宝库";break;
+            case "100":str="红包场";break;
+            }
+        $('#divTitle').append("<font size='26'>"+str+"</font>");
+    }
+
+    function clearWave()
+    {
+        doAjax(getAllObj(),"/tableClear","清除成功");
+    }
+    addWaveBtn(this.waveId,"波");
+    initURL("/tableGet","/intemUpdate","/itemDelete","/itemAdd");
+
+    addInputs(3);
+    loadData(this.fixData);
+
+    function onshowPage(idx) {
+        var uu = this.refreshurl;
+        window.location.href = "/cms/fish_out_tables.html?roomId=" + roomId + "&waveId=" + idx;
+    }
+    function addWaveBtn(idx, word) {
+        var str = "<div>";
+        for (var i = 0; i < 20; i++) {
+            var cls = "btn btn-warning";
+            if (i == idx) {
+                cls = "btn btn-primary";
+            }
+            if (i == 10) {
+                str += "</div><p/><div>"
+            }
+
+            str += "<span>--<span>";
+            str += "<button class='" + cls + "' type='button' onclick='onshowPage(" + i + ")'>" + word + i + "</button>";
+        }
+        str += "</div>"
+        $('#divWave').append(str);
+    }
+    function checkGroup(){
+        window.location.href = "/cms/fish_out_group.html?roomId=" + roomId + "&waveId=" + waveId;
+    }
+
+
+
+
+

@@ -1,0 +1,105 @@
+{
+  "portwww": 4001,
+  "version": "v00.1.001",
+  "mysql_net": {
+    "dialect": "mysql",
+    "host": "120.78.161.149",
+    "port": 3306,
+    "username": "ddm",
+    "password": "QWEpoi@@123",
+    "database": "sean",
+    "timezone": "+08:00"
+  },
+  "redis_net": {
+    "info": "外服redis",
+    "host": "120.77.43.7",
+    "port": 6379,
+    "db": 0
+  },
+  "use_db": "mysql_net",
+  "use_redis": "redis_net",
+  "openlog": "1",
+  "logname": "log",
+  "debugType": "1",
+  "serverkey": "000",
+  "ASIN":"https://www.amazon.com/dp/",
+  "movie_1": {
+    "id": 1,
+    "name": "m11视频",
+    "chartset":"utf-8",
+    "host": "https://11k.cc",
+    "see_path": "https://11k.cc",
+    "search_path": "/index.php?u=search-index&keyword=<keyword>&submit=%E6%90%9C+%E7%B4%A2",
+    "play_path": "https://11k.cc"
+  },
+  "movie_2": {
+    "id": 2,
+    "name": "美剧视频",
+  "chartset":"gbk",
+  "host": "https://m.meijutt.tv",
+  "see_path": "https://m.meijutt.tv",
+  "search_path": "/search/index.asp?searchword=<keyword>",
+  "play_path": ""
+},
+  "movie_3": {
+    "id": 3,
+    "name": "碟调网",
+    "chartset":"utf-8",
+    "host": "https://www.diediaow.com",
+    "tj": {    "selector": "#scroller  section  section  section:nth-child(4)  section  section.tb_a  ul  li",
+      "attribs":[{"name":"名称","path":" span  a","att":"data"}
+      ,{"name":"图片","path": " div  a  img","att": "src"}
+      ,{"name":"链接","path": " span  a","att": "href"}]},
+    "list": {    "selector": "#scroller  section  section  section:nth-child(4)  section  section.tb_a  ul  li",
+      "attribs":[{"name":"名称","path":" span  a","att":"data"}
+      ,{"name":"图片","path": " div  a  img","att": "src"}
+      ,{"name":"链接","path": " span  a","att": "href"}]},
+    "search_path": "/vod-search-wd-<keyword>.html",
+    "see_path": "https://www.zanpian.cc",
+    "play_path":"https://php.kaicheba.cc/dplay/juhe.php?id="
+  },
+  "movie_4": {
+    "id": 4,
+    "name": "乐乐看",
+    "chartset":"gb2312",
+    "host": "https://www.lelekan.com",
+    "see_path": "https://www.lelekan.com",
+    "see_js": "https://www.lelekan.com/m/play/films_<idx>.json?0.49821253573360913",
+    "search_path": "/search.php?q=<keyword>&channeltype=17"
+  },
+  "movie_5": {
+    "id": 5,
+    "name": "韩剧网",
+    "chartset":"utf-8",
+    "host": "https://www.juji.tv",
+    "see_path": "https://www.juji.tv",
+    "see_js": "https://www.juji.tv/dianshiju/turanhuidao18sui/<idx>.js?5dbd8ae6315f6",
+    "search_path": "/s/vod-search-wd.html?wd=<keyword>"
+  },
+  "movie_6": {
+    "id": 6,
+    "name": "wxtv",
+    "chartset":"utf-8",
+    "host": "https://v.weixintv8.com",
+    "see_path": "https://v.weixintv8.com",
+    "see_js": "https://www.juji.tv/dianshiju/turanhuidao18sui/<idx>.js?5dbd8ae6315f6",
+    "search_path": "/index.php?m=vod-search&wd=<keyword>"
+  },"movie_100": {
+    "id": 100,
+    "name":"hao5直播",
+    "host": "http://m.hao5.net/tvmobile.html"
+  },
+  "test": {
+    "url":"https://v.weixintv8.com",
+    "selector": "#scroller  section  section  div.i_caidan  p  a",
+    "attribs":[{"name":"地址","path":"","att":"href"},{"name": "类型","path": " span","att": "data"}]
+  },
+  "test2": {
+    "url":"https://v.weixintv8.com",
+    "selector": "#scroller  section  section  section:nth-child(4)  section  section.tb_a  ul  li",
+    "attribs":[{"name":"名称","path":" span  a","att":"data"}
+              ,{"name":"图片","path": " div  a  img","att": "src"}
+              ,{"name":"链接","path": " span  a","att": "href"}]
+  }
+
+}

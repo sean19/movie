@@ -1,0 +1,35 @@
+// Bootstrap core JavaScript
+script(src='vendor/jquery/jquery.min.js')
+script(src='vendor/bootstrap/js/bootstrap.bundle.min.js')
+// Core plugin JavaScript
+script(src='vendor/jquery-easing/jquery.easing.min.js')
+//提示框
+script(src='/javascripts/alert.min.js')
+
+script(type="text/javascript").
+    function notLogin( data ) {
+        if( null == data || 401 != data.error )
+        {//有登录状态正常数据时，返回false
+            return false;
+        }
+        alert("亲，未登录！或者帐号登录超时");
+        // jqueryAlert({
+        //     'content':"亲，未登录！或者帐号登录超时",
+        //     'contentTextAlign': 'center',
+        //     'height': '130',
+        //     'width': '300',
+        //     'title': '登录帐号',
+        //     'modal': true,
+        //     'bodyScroll': true
+        // } );
+
+        // setTimeout( function() {
+            window.location.href = "/cms/login.html"
+        // }, 1000 );
+
+        return true;//没有登录，返回true
+    }
+    function goLogin(data) {
+        notLogin( data );
+        return data.data;
+    }

@@ -1,0 +1,103 @@
+doctype html
+html(lang='en')
+
+    head
+        meta(charset='utf-8')
+        meta(http-equiv='X-UA-Compatible', content='IE=edge')
+        meta(name='viewport', content='width=device-width, initial-scale=1, shrink-to-fit=no')
+        meta(name='description', content='')
+        meta(name='author', content='')
+
+        include ../pug_includes/titleTV.pug
+
+        include ../pug_includes/css/core.pug
+
+        // Page level plugin CSS
+        link(href='vendor/datatables/dataTables.bootstrap4.css', rel='stylesheet')
+
+        include ../pug_includes/css/custom.pug
+
+    body#page-top.fixed-nav.sticky-footer.bg-dark
+        include ../pug_includes/navbar.pug
+        .content-wrapper
+            .container-fluid
+                // Breadcrumbs
+                ol.breadcrumb
+                    li.breadcrumb-item
+                        div
+                            label(id="txt_title") title
+                        div
+                            label(id="showTip") fill ASIN before getdata
+                        div(id="divProduct")
+
+include ../pug_includes/footer.pug
+
+include ../pug_includes/scroll-to-top.pug
+
+include ../pug_includes/modals/logout.pug
+
+include ../pug_includes/js/core.pug
+
+// Page level plugin JavaScript
+script(src='vendor/datatables/jquery.dataTables.js')
+script(src='vendor/datatables/dataTables.bootstrap4.js')
+
+include ../pug_includes/js/custom.pug
+
+
+// Custom scripts for this page
+script(src='js/sb-admin-datatables.min.js')
+script(src='js/sb-admin-datatables.min.js')
+script(src="js/DataProvider.js")
+script(src="js/FileResder.js")
+script(src="js/UtilMovie.js")
+
+script.
+    var divProduct= document.getElementById('divProduct');
+    var txt_title= document.getElementById('txt_title');
+    var showTip= document.getElementById('showTip');
+    var lbl = document.getElementById('showTip');
+
+    var key;
+    init();
+    function init() {
+        var title = this.getTitle('title');
+        key = getQueryString("key");
+        platform = getQueryString('platform');
+
+        initTitle(document.getElementsByClassName('navbar-brand')[0], platform,title);
+        initTitle(document.getElementById('titletv'), platform, title);
+
+        txt_title.innerText=title;
+        var link = getQueryString("link");
+        var from = getQueryString("from");
+
+        showTip.innerText="正在查找资源，请稍候！";
+        var obj = {link:link,key:key,title:title,platform:platform};
+        this.searchData("/getMovieSeeData", JSON.stringify(obj), "刷新成功");
+
+    }
+    function showInfo(t, msg = '') {
+        switch (t) {
+            case 0:showerr();
+                break;
+            case 1:
+                lbl.textContent = "getting data please wait!";
+                break;
+            case 2:showerr();
+                break;
+        }
+        if (msg != '')
+            lbl.textContent = msg;
+
+    }
+
+    function showProduct(d){
+        var data = d.data;
+        var tv = document.getElementById('divSee');
+        tv.innerHTML = data.playContent;
+    }
+    function showerr(){
+        showTip.innerText="资源找不到了，请返回！";
+    }
+

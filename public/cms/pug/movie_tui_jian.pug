@@ -1,0 +1,122 @@
+doctype html
+html(lang='en')
+    head
+        link(href='css/movie_tuijian.css', rel='stylesheet')
+
+
+body(style="background-color:black" ondblclick='launchexitFullscreen()')
+    div(id="divSee" style="width:100%;height:1000px;background-color:black"   )
+    div
+        button(onclick="showFrameFullScreen()" class="yongyin1") 全屏
+        button(onclick="loadTJ()" class="yongyin2") 加载推荐
+        button(onclick="location.reload()" class="yongyin1") 刷新
+        button(onclick="changestyle()" class="yongyin2") 样式
+        input(id="tjm" type="input" class='form-control')
+
+
+script(src='https://libs.baidu.com/jquery/1.9.1/jquery.min.js')
+script.
+    console.log("kaishi")
+    init();
+    function init(){
+        // checkload();
+
+
+
+
+
+        loadmv("");
+    }
+
+
+    function loadmv(tjm){
+        var url = "/tjmovieget";
+        var pd = {tjm:tjm};
+        $.ajax({
+            url: url,
+            data: JSON.stringify(pd),
+            type: 'post',
+            cache: false,
+            dataType: 'json',
+            success: function (data) {
+                switch (data.error) {
+                    case 0:
+                        onplmv(data);
+                        break;
+                    case 1002:
+                        break;
+                    default:
+                        break;
+                }
+
+            },
+            error: function () {
+                lbl.textContent = "推荐失败";
+            }
+
+        });
+    }
+
+    function onplmv(data){
+        var movieurl = data.data["movieurl"];
+        var tv = document.getElementById('divSee');
+        tv.innerHTML = movieurl;
+    }
+
+
+
+
+    // 判断各种浏览器，找到正确的方法
+    function launchFullscreen(element) {
+
+        if (element.requestFullscreen) {
+            element.requestFullscreen().catch(function (e) {
+                is_full=false;
+            })
+        } else if (element.mozRequestFullScreen) {
+            element.mozRequestFullScreen().catch(function (e) {
+                is_full = false;
+            })
+        } else if (element.webkitRequestFullscreen) {
+            element.webkitRequestFullscreen().catch(function (e) {
+                is_full = false;
+            })
+        } else if (element.msRequestFullscreen) {
+            element.msRequestFullscreen().catch(function (e) {
+                is_full = false;
+            })
+        }
+    }
+    // 判断各种浏览器，找到正确的方法
+    function launchexitFullscreen() {
+        if (document.exitFullscreen) {
+            document.exitFullscreen();
+        } else if (document.msExitFullscreen) {
+        document.msExitFullscreen();
+        } else if (document.mozCancelFullScreen) {
+        document.mozCancelFullScreen();
+        } else if (document.oRequestFullscreen) {
+        document.oCancelFullScreen();
+        } else if (document.webkitCancelFullScreen) {
+        document.webkitCancelFullScreen();
+        }
+    }
+    function loadFrame() {
+
+    }
+    function checkload(){
+
+    }
+    var is_full = false;
+    var int_interval;
+    function showFrameFullScreen(){
+        var fm = document.getElementById("frameSee");
+        if (fm){
+            launchFullscreen(fm); // 某个页面元素
+        }
+        is_full=true;
+    }
+    function loadTJ(){
+        var tjm = $('#tjm')[0].value;
+        loadmv(tjm);
+    }

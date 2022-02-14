@@ -1,0 +1,453 @@
+doctype html
+html(lang='en')
+
+    head
+        meta(charset='utf-8')
+        meta(http-equiv='X-UA-Compatible', content='IE=edge')
+        meta(name='viewport', content='width=device-width, initial-scale=1, shrink-to-fit=no')
+        meta(name='description', content='')
+        meta(name='author', content='')
+
+        include ../pug_includes/titleTV.pug
+
+        include ../pug_includes/css/core.pug
+
+        // Page level plugin CSS
+        link(href='vendor/datatables/dataTables.bootstrap4.css', rel='stylesheet')
+
+        include ../pug_includes/css/custom.pug
+
+
+    //----------------------------
+    body#page-top.fixed-nav.sticky-footer.bg-dark
+        div(class="modal fade" id="edit" tabindex="-1" role="dialog"
+        aria-labelledby="myModalLabel" aria-hidden="true"
+        style="position:fixed;top:20%")
+            div(class="modal-dialog")
+                div(class="modal-content")
+                    div(class="modal-header")
+                        h4(class="modal-title" id="info-dialog-title")
+                        button(type="button" class="close" data-dismiss="modal" aria-hidden="true") &times;
+                    div( id="edit_inputs" class="modal-body")
+                    div( class="modal-footer text-center")
+                        button(type="button" data-dismiss="modal" class="btn btn-outline-danger" id="btn-delete") 删除
+                            button(type="button" class="btn btn-default" data-dismiss="modal") 关闭
+                            button(type="button" data-dismiss="modal" class="btn btn-warning" id="btn-add") 添加
+                            button(type="button" data-dismiss="mSodal" class="btn btn-primary" id="btn-edit") 提交修改
+
+
+
+        include ../pug_includes/navbar.pug
+        .content-wrapper
+            .container-fluid
+                // Breadcrumbs
+                ol.breadcrumb
+                    li.breadcrumb-item
+                        div
+                            pan  网页检测：
+                        div
+                            label(id="showTip") 请输入网页内容
+                        div
+                            label(id="showTip") 【例】https://m.xbooktxt.net/search.php?q=%E5%93%88%E5%93%88
+                        div(id="input")
+                            input(id="txt_asin_code",type="text")
+                            span &emsp;&emsp;
+                            button(id ="btnGet" type="button" data-dismiss="modal" class="btn btn-outline-danger"  onclick="getDataFromHtml()") 获取页面数据
+                            span &emsp;&emsp;
+                            input(id="redoitype",type="radio" name='tt' checked='true' value='1' onclick='ontypechange()') 
+                            span html
+                             input(id="redoitype",type="radio" name='tt' value='2' onclick='ontypechange()') 
+                            span json
+                        div(id="divhtml"  )
+                                span html
+                                label(id="lblhtml") 空
+                        div(id="divcheck"  style="display:none" )
+                            div
+                                span -获取参数列表----------------------------
+                            div
+                                span 【例】body > div.result-list > div:nth-child(1) > div.result-game-item-detail > h3 > a
+                            div
+                                span 【选择器】body > div.result-list > div
+                            div   
+                                span 【路径】div.result-game-item-detail > h3 > a
+                            div
+                                span -获取参数列表----------------------------
+                            div
+                                label(id="lblname") 选择器
+                                input(id="txt_config_code",type="text")
+                                span &emsp;&emsp;
+                                button(id ="btnlist" type="button" data-dismiss="modal" class="btn btn-outline-danger"  onclick="getcheckDatalist()") 分析列表
+                            div(id="divProduct")
+                                label(id="lblchecklistinfo") 空
+                                label(id="lblchecklistdata") 空
+                            div(id="divsub" style="display:none" )
+                                label(id="lblname") 字段名
+                                input(id="txt_config_name",type="text")
+                                div
+                                    label(id="lblatt") path()
+                                    input(id="txt_config_path",type="text")
+                                div(id="sub_att")
+                                        label(id="lblatt") att==
+                                        input(id="txt_config_att",type="text")
+                                        label(id="lblatt") text：文本/all:html/空:text/其它:data[0].attribs[att]
+                                div(id="sub_deel")
+                                        label deel=
+                                        input(id="txt_config_deel",type="text")
+                                        label 处理方法"{'title':'substr','param':'str1@str2'},{'title':'replace','param':'str3@str4'},{'title':'json','param':''},{'title':'get','param':'str5'}"::::json格式
+                                div 
+                                    button(id ="btnck" type="button" data-dismiss="modal" class="btn btn-outline-danger"  onclick="getfindData()") 分析获取字段
+                                
+                                div
+                                    label(id="lblfindinfo") 空
+                                div
+                                    label(id="lblfinddata") 空
+                            div(id="showtable")
+                            div 
+                                span &emsp;&emsp;
+                            div 
+                                button(id ="btnckadd" type="button" data-dismiss="modal" class="btn btn-outline-danger"  onclick="addData()") 添加到表
+                                span &emsp;&emsp;
+                                button(id ="btnckdelete" type="button" data-dismiss="modal" class="btn btn-outline-danger"  onclick="deleteData()") 删除一行
+                                span &emsp;&emsp;
+                                button(id ="btnckdelete" type="button" data-dismiss="modal" class="btn btn-outline-danger"  onclick="testData()") 测试数据
+                            div(id="resulttable")
+                        div(id="divupload"  )
+                                div
+                                    span 【5】****************服务器操作****************
+                                div
+                                    label id&emsp;&emsp;&emsp;
+                                    input(id="txt_upload_id",type="text")  
+                                div 
+                                    label 说明&emsp;&emsp;
+                                    input(id="txt_upload_info",type="text")     
+                                div 
+                                    span &emsp;&emsp;
+                                    label(id="lbluploaddata") 空
+                                div 
+                                    button(id ="btnckupload" type="button" data-dismiss="modal" class="btn btn-outline-danger"  onclick="uoloadData()") 开始上传
+                                div 
+                                 span &emsp;&emsp;【6】----------------------注意加载的是id的数据
+                                div 
+                                    button(id ="btnckdown" type="button" data-dismiss="modal" class="btn btn-outline-danger"  onclick="downloadData()") 加载
+
+                                
+
+
+include ../pug_includes/footer.pug
+
+include ../pug_includes/scroll-to-top.pug
+
+include ../pug_includes/modals/logout.pug
+
+include ../pug_includes/js/core.pug
+
+// Page level plugin JavaScript
+script(src='vendor/datatables/jquery.dataTables.js')
+script(src='vendor/datatables/dataTables.bootstrap4.js')
+
+include ../pug_includes/js/custom.pug
+
+
+// Custom scripts for this page
+script(src='js/sb-admin-datatables.min.js')
+script(src='js/sb-admin-datatables.min.js')
+script(src="js/DataProvider.js")
+script(src="js/FileResder.js")
+script(src="js/UtillHtmlCheck.js")
+script.
+
+    var btn = document.getElementById('btnGet');
+    var lbl = document.getElementById('showTip');
+    var divProduct= document.getElementById('divProduct');
+    var showtable= document.getElementById('showtable');
+    var lblhtml= document.getElementById('lblhtml');
+    var divcheck= document.getElementById('divcheck');
+    var lblchecklistinfo= document.getElementById('lblchecklistinfo');
+    var lblchecklistdata= document.getElementById('lblchecklistdata');
+
+    var divsub= document.getElementById('divsub');
+    var lblfindinfo= document.getElementById('lblfindinfo');
+    var lblfinddata= document.getElementById('lblfinddata');
+
+    var resulttable= document.getElementById('resulttable');
+
+    var lbluploaddata= document.getElementById('lbluploaddata');
+
+
+    
+
+    
+    var checkdata=null;
+    var datatype='1';//1是html2是json
+
+    //==============
+    function ontypechange(){
+        this.datatype= $("input[name='tt']:checked").val();
+        alert("数据类型："+(this.datatype=='1'?"html":"json"));
+    }
+    function getDataFromHtml() {
+        try{
+            var kw = $('#txt_asin_code')[0].value;
+            if (kw == "" ) {
+                lbl.textContent = "请输入关键字!";
+            } else {
+                lblhtml .textContent = "<span>**************************</span>";
+                this.dogetDataFromHtml(kw)
+            }
+        }catch (e) {
+            lbl.textContent = e.toString();
+        }
+
+    }
+    function dogetDataFromHtml(kw){ 
+        lbl.textContent = "正在搜索"+kw;
+        var keyword = encodeURI(kw);
+        alert(kw);
+        var obj = {keyword: keyword};
+        this.getHtmlData("/gethtmldata", JSON.stringify(obj), this.showHtmlData);
+    }
+
+    function showHtmlData(data){
+        //- alert(JSON.stringify(data));
+       var statusCode = data.data["statusCode"];
+        //- alert(statusCode);
+
+       if(statusCode=="200"){
+            checkdata= data.data ;
+            lblhtml .textContent = "内容长度:"+JSON.stringify(checkdata)  .length;
+            divcheck .style.display="inline";
+       }else{
+           aleart("加载错误:"+statusCode);
+            divcheck.style.display="none";
+       }
+    }
+    //===获取列表======================================================
+   function getcheckDatalist(){
+        try{
+            var selector = $('#txt_config_code')[0].value;
+            if (checkdata ==null || selector == "" ) {
+                lblchecklistinfo.textContent = "请输入分析字符!";
+            } else {
+                lblchecklistinfo.textContent="开始分析。。。";
+                if(this.datatype=='1'){
+                    //- var keyword = JSON.parse(kw);
+                    //- var body = encodeURI(checkdata);
+                    var obj = {selector: selector,body:checkdata};
+                    this.getHtmlData("/getcheckhtmldatalist", JSON.stringify(obj), this.showCheckHtmlDataList);
+                }else{
+                    var bodyobj=JSON.parse(this.checkdata.body);
+                    var d=bodyobj[selector]
+                    showCheckHtmlDataList(d)
+                }
+              
+            }
+        }catch (e) {
+            lbl.textContent = e.toString();
+        }
+   }  
+   function showCheckHtmlDataList(data){
+        var str = data.data;
+        console.log(str)
+        alert("长度==="+data.length)
+        this.lblchecklistinfo .textContent="分析完成；长度==="+data.length;
+        if(str){
+            lblchecklistdata.textContent= "字符长度"+str.length;
+        }
+        if(data.length>0){
+            divsub.style.display="inline";
+        }else{
+            divsub.style.display="none";
+
+        }
+       
+    }
+    //=======获取搜索数据=================
+    function getfindData(){
+            var name = $('#txt_config_name')[0].value;
+            var path = $('#txt_config_path')[0].value;
+            var att = $('#txt_config_att')[0].value;
+            var deel = $('#txt_config_deel')[0].value;
+            var child = "1";
+            try{
+                var selector = $('#txt_config_code')[0].value;
+                 if (checkdata ==null || selector == ""){
+                    lblfindinfo.textContent = "请执行第1，第二步操作";
+                    return;
+                 }
+                if ( name==""||child=="") {
+                    lblfindinfo.textContent = "请输入分析字符!";
+                    return;
+                } 
+                lblfindinfo.textContent="开始搜索。。。";
+                //- alert(deel);
+                //- var dellobj = JSON.parse(deel);
+                //- var attribs = {name:name,path:path,att:att,child:child,deel:JSON.parse(deel)};
+                var obj = {datatype:this.datatype, selector: selector,body:checkdata,name:name,path:path,att:att,child:child,deel:deel};
+                var str =JSON.stringify(obj);
+                lblfindinfo.textContent="开始搜索。。。";
+                this.getHtmlData("/getcheckhtmlinfo", JSON.stringify(obj), this.showfinddata);
+                infodata=""
+            }catch (e) {
+                lbl.textContent = e.toString();
+            }
+    }
+    function showfinddata(data){
+        var str = data.data;
+        console.log(str)
+        lblfindinfo.textContent="结束搜索。。。";
+        lblfinddata.textContent= str;
+        infodata=str;
+    }
+    //======================================================
+    //==========表操作============================================
+    //======================================================
+    //======================================================
+    //======================================================
+    //======================================================
+    //======================================================
+    //======================================================
+    var infodata="";
+    var locallist = [];
+    updateTable(showtable,locallist);
+    function addData(){
+        if(infodata==""){
+            alert('先分析字段');
+            return;
+        }
+        var name = $('#txt_config_name')[0].value;
+        var path = $('#txt_config_path')[0].value;
+        var att = $('#txt_config_att')[0].value;
+        var deel = $('#txt_config_deel')[0].value;
+        var child = "1";
+        var selector = $('#txt_config_code')[0].value;
+        if (checkdata ==null || selector == "" || name==""||child=="") {
+            alert('先搜索数据');
+            return;
+        }
+        var attribs = {name:name,path:path,att:att,child:child,deel:deel,data:infodata};
+        alert(attribs)
+        locallist .push(attribs);
+        updateTable(showtable,locallist)
+
+    }
+     function deleteData(){
+         if(locallist.length>0){
+         locallist .splice(locallist.length-1,1);
+         }
+        updateTable(showtable,locallist)
+    }
+    //======================================================
+    //=======测试===============================================
+    //======================================================
+    //======================================================
+    //======================================================
+    function testData(){
+        var url = $('#txt_asin_code')[0].value;
+        if(url==""){
+            alert("缺少目标");
+            return;
+        }
+        var selector = $('#txt_config_code')[0].value;
+          if(selector==""){
+            alert("缺少选择器");
+            return;
+        }
+        alert("开始搜索");
+        lblfindinfo.textContent="开始搜索。。。";
+        url = encodeURI(url);
+        var obj =  {url:url,datatype:this.datatype,selector: selector,attribs:locallist};
+        this.getHtmlData("/testsearch", JSON.stringify(obj), this.showsearchdata);
+    }
+    function showsearchdata(data){
+        var d = data.data;
+        var infoarr = [];
+        for(var i = 0;i<d["length"];i++){
+            var obj = d[i];
+            var arr = [JSON.stringify(obj)];
+            infoarr.push(arr)
+        }
+         updateTable2(resulttable,infoarr);
+         if(d['length']>0){
+             document.getElementById('divupload').style.display="inline";
+         }
+    }
+     //======================================================
+    //=======上传===============================================
+    //======================================================
+    //======================================================
+    //======================================================
+    //======================================================
+    function uoloadData(){
+        var uploadid = $('#txt_upload_id')[0].value;
+        var unloadinfo = $('#txt_upload_info')[0].value;
+        if(unloadinfo==""){
+            alert("缺少信息");
+            return;
+        }
+        var url = $('#txt_asin_code')[0].value;
+        if(url==""){
+            alert("缺少目标");
+            return;
+        }
+        var selector = $('#txt_config_code')[0].value;
+          if(selector==""){
+            alert("缺少选择器");
+            return;
+        }
+        var arr=[];
+        
+        for(var i =0;i<locallist.length;i++){
+            var obji = locallist[i];
+            var newobj = {};
+            arr.push(newobj);
+            newobj.name=obji.name;
+            newobj.path=obji.path;
+            newobj.att=obji.att;
+            newobj.deel=obji.deel;
+            
+        }
+        lbluploaddata.textcontent="正在上传中。。。";
+        url = encodeURI(url);
+        var obj = {url:url,selector: selector,attribs:arr};
+        obj.id=uploadid;
+        obj.info=unloadinfo;
+        this.getHtmlData("/uploadsearchinfo", JSON.stringify(obj), this.showuploadresult);
+    }
+    function showuploadresult(data){
+        alert("上传结果:"+data.data);
+    } 
+    //=====下载数据检查=================================================
+    //======================================================
+    function downloadData(){
+        var uploadid = $('#txt_upload_id')[0].value;
+        if(uploadid==""){
+            alert("缺少id信息");
+            return;
+        }
+        var obj = {};
+        obj.id=uploadid;
+        this.getHtmlData("/downloadsearchinfo", JSON.stringify(obj), this.showDownloadData);
+    }
+    function showDownloadData(data){
+        var infodata = data.data;
+        alert ("更新成功"+infodata['info']);
+
+         $('#txt_asin_code')[0].value=infodata["url"];
+
+        $('#txt_upload_info')[0].value=infodata ["info"];
+        resulttable.innerHTML = "<span>没有数据!</span>";
+        $('#txt_config_code')[0].value = infodata["selector"];
+
+        locallist=[];
+  
+        alert ("更新成功"+infodata["attribs"]);
+
+        var attribs = JSON.parse(infodata["attribs"]);
+        for(var i =0;i<attribs.length;i++){
+            locallist.push(attribs [i]);
+        }
+        updateTable(showtable,locallist);
+         divsub .style.display="inline";
+         divcheck .style.display="inline";
+    }
+   

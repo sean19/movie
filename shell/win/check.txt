@@ -1,0 +1,4 @@
+查看window端口占用并关掉
+1、netstat -ano|findstr "端口号"
+2、找出对应的pid
+3、在进程管理那里找到相应的pid删除掉

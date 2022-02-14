@@ -1,0 +1,171 @@
+doctype html
+html(lang='en')
+
+    head
+        meta(charset='utf-8')
+        meta(http-equiv='X-UA-Compatible', content='IE=edge')
+        meta(name='viewport', content='width=device-width, initial-scale=1, shrink-to-fit=no')
+        meta(name='description', content='')
+        meta(name='author', content='')
+
+        include ../pug_includes/title.pug
+
+        include ../pug_includes/css/core.pug
+
+        // Page level plugin CSS
+        link(href='vendor/datatables/dataTables.bootstrap4.css', rel='stylesheet')
+
+        include ../pug_includes/css/custom.pug
+
+
+    //----------------------------
+    body#page-top.fixed-nav.sticky-footer.bg-dark
+
+        include ../pug_includes/navbar.pug
+        .content-wrapper
+            .container-fluid
+                // Breadcrumbs
+                ol.breadcrumb
+                    li.breadcrumb-item
+                        div(id='divTitle') 实时数据
+                    li.breadcrumb-item.active <Tables></Tables>
+                // Example DataTables Card
+                .card.mb-3
+                    .card-header
+                        i.fa.fa-table
+                        |ASIN示例池池情况
+                        div(id ="divWave1")
+                            span 房间：
+                            select(id="selectRooms" class="btn btn-primary")
+                                option(value=0) 阳光沙滩
+                                option(value=1) 深海宝库
+                                option(value=2) 海底遗迹
+                                option(value=100) 红包场
+                        div
+                        div
+                            span ASIN示例池：
+                            select(id="selectPools" )
+                                option(value=0) 普通ASIN示例池
+                                option(value=1) 试玩ASIN示例池
+                                option(value=2) 作弊ASIN示例池
+                        div
+                        div(id ="divWave2")
+                            span 开始时间：
+                            input(id="datetimepicker",type="text")
+                            span [----]结束时间：
+                            input(id="datetimepicker1",type="text")
+                            span [----]
+                        div
+                            button(id="btn_show" data-dismiss="modal" class="btn btn-primary" onclick="showLine()") 查看
+
+
+
+                .card-body
+                       canvas#myAreaChart(width='100%', height='30')
+
+                .card-footer.small.text-muted
+                    | Updated yesterday at 11:59 PM
+
+            include ../pug_includes/footer.pug
+
+            include ../pug_includes/scroll-to-top.pug
+
+            include ../pug_includes/modals/logout.pug
+
+            include ../pug_includes/js/core.pug
+
+            // Page level plugin JavaScript
+            script(src='vendor/datatables/jquery.dataTables.js')
+            script(src='vendor/datatables/dataTables.bootstrap4.js')
+
+            include ../pug_includes/js/custom.pug
+
+
+            // Custom scripts for this page
+            script(src='js/sb-admin-datatables.min.js')
+    script(src='js/sb-admin-datatables.min.js')
+    script(src='js/bootstrap-datetimepicker.js')
+    link(href='css/bootstrap-datetimepicker.css', rel='stylesheet')
+    script(src='vendor/chart.js/Chart.min.js')
+    script(src='js/DataChart.js')
+    script.
+        var roomdatas = [];
+        function addOption(sel, text, value) {
+            var opt = new Option(text, value);
+            sel.options.add(opt);
+        }
+        function initSelects(){
+            initSelectRoomType();
+            initSelctRoomId();
+        }
+        function initSelectRoomType(){
+            var selectType = $('#selectType')[0];
+            var roomtypearr = [];
+            for(var i = 0 ;i<roomdatas.length;i++){
+                var obj = roomdatas[i];
+                var roomtypeinfo = obj["roomType"];
+                if(roomtypearr.indexOf(roomtypeinfo) == -1){
+                    roomtypearr.push(roomtypeinfo);
+                    addOption(selectType,roomtypeinfo,roomtypeinfo);
+                }
+            }
+
+        }
+        function initSelctRoomId(){
+            var selectType = $('#selectType')[0];
+            var selectRoomId = $('#selectRoomId')[0];
+            selectRoomId.options.length=0;
+            var type = selectType.value;
+            var roomidearr = [];
+            for (var i = 0; i < roomdatas.length; i++) {
+                var obj = roomdatas[i];
+                var roomtypeinfo = obj["roomType"];
+                var roomIdinfo = obj["roomId"];
+                if (roomidearr.indexOf(roomIdinfo) == -1 && type==roomtypeinfo) {
+                    roomidearr.push(roomIdinfo);
+                    addOption(selectRoomId, roomIdinfo, roomIdinfo);
+                }
+            }
+        }
+
+
+        function showLine(){
+            var dataapp ={roomType: $('#selectRooms')[0].value,
+                poolType: $('#selectPools')[0].value,
+                startTime: $('#datetimepicker')[0].value,
+                endTime: $('#datetimepicker1')[0].value
+            };
+
+            showChart(
+                "/getChartPoolDetail",
+                dataapp,
+                "tm",
+                [
+                    {lable: "大池金币", datakey: "gold_1", type: "", color: "rgba(0,117,0,12)"},
+                    {lable: "小池金币", datakey: "gold_1", type: "", color: "rgba(0,117,117,12)"},
+                    {lable: "金币变量", datakey: "gold_add", type: "", color: "rgba(117,0,0,12)"},
+
+                ]);
+        }
+
+        initTimePicker();
+        function initTimePicker() {
+            $('#datetimepicker').datetimepicker({
+                format: 'yyyy-mm-dd hh:ii',
+                todayBtn: true,
+                language: 'zh-CN',
+                autoclose: true,
+
+
+            });
+            $('#datetimepicker1').datetimepicker({
+                format: 'yyyy-mm-dd hh:ii',
+                todayBtn: true,
+                language: 'zh-CN',
+                autoclose: true,
+
+            });
+        }
+
+
+

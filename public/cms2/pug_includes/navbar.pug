@@ -1,0 +1,292 @@
+// Navigation
+nav#mainNav.navbar.navbar-expand-lg.navbar-dark.bg-dark.fixed-top
+  a.navbar-brand(href='index.html') 轻松赚
+  button.navbar-toggler.navbar-toggler-right(type='button', data-toggle='collapse', data-target='#navbarResponsive', aria-controls='navbarResponsive', aria-expanded='false', aria-label='Toggle navigation')
+    span.navbar-toggler-icon
+  #navbarResponsive.collapse.navbar-collapse
+    ul#exampleAccordion.navbar-nav.navbar-sidenav
+      //li.nav-item(data-toggle='tooltip', data-placement='right', title='Dashboard')
+      //  a.nav-link(href='index.html')
+      //    i.fa.fa-fw.fa-dashboard
+      //    span.nav-link-text
+      //      | Dashboard
+      //li.nav-item(data-toggle='tooltip', data-placement='right', title='Charts')
+      //  a.nav-link(href='RoomChart.html')
+      //    i.fa.fa-fw.fa-area-chart
+      //    span.nav-link-text
+      //      | Charts
+      //==============================================
+      li.nav-item(data-toggle='tooltip', data-placement='right', title='Components')
+         a.nav-link.nav-link-collapse.collapsed(data-toggle='collapse', href='#systemctl', data-parent='#exampleAccordion')
+           i.fa.fa-fw.fa-wrench
+           span.nav-link-text
+             | 系统操作
+         ul#systemctl.sidenav-second-level.collapse
+           li
+             a(href='table_sys_ctl.html') 系统操作
+           li
+             a(href='table_sys_gold_analysis.html') 系统数据分析
+           li
+             a(href='table_sys_config.html') 系统设计
+           li
+             a(href='user_number_list.html') 号码设置
+           li
+             a(href='user_wudi_list.html') 无敌用户设置
+           li
+             a(href='user_ban_list.html') 黑名单用户设置
+      //==============================================
+      li.nav-item(data-toggle='tooltip', data-placement='right', title='Components')
+         a.nav-link.nav-link-collapse.collapsed(data-toggle='collapse', href='#infodata', data-parent='#exampleAccordion')
+           i.fa.fa-fw.fa-wrench
+           span.nav-link-text
+             | 实时数据
+         ul#infodata.sidenav-second-level.collapse
+           li
+             a(href='cpu_info.html') cpu查看
+           li
+             a(href='table_fisheat_info.html') 鱼吃吐比
+           li
+             a(href='table_room_info.html') 房间数据
+           li
+             a(href='table_user_online_info.html') 在线玩家
+           li
+             a(href='table_handler_info.html') 玩家控制器信息
+           li
+              a(href='table_sampling_detail.html') 房间采样点
+           li
+             a(href='chart_sampling_detail.html') 房间图表
+           li
+             a(href='check_fish_road.html') 路线检查
+           li
+             a(href='redis_all_info.html') redis检查
+
+      //==============================================
+      //==============================================
+      li.nav-item(data-toggle='tooltip', data-placement='right', title='Components')
+         a.nav-link.nav-link-collapse.collapsed(data-toggle='collapse', href='#pooldata', data-parent='#exampleAccordion')
+           i.fa.fa-fw.fa-wrench
+           span.nav-link-text
+             | 鱼池数据
+         ul#pooldata.sidenav-second-level.collapse
+            li
+             a(href='table_player_rate_config.html') 玩家增益配置
+            li
+              a(href='table_player_rate_info.html') 玩家增益信息
+            li
+              a(href='table_player_black_info.html') 玩家鱼池归属
+            li
+             a(href='table_pool_config.html') 鱼池配置
+            li
+             a(href='table_pool_info.html') 鱼池信息
+            li
+             a(href='chart_pool_detail.html') 鱼池金币变化
+            //==============================================
+
+      li.nav-item(data-toggle='tooltip', data-placement='right', title='Components')
+         a.nav-link.nav-link-collapse.collapsed(data-toggle='collapse', href='#userdata', data-parent='#exampleAccordion')
+           i.fa.fa-fw.fa-wrench
+           span.nav-link-text
+             | 用户数据
+         ul#userdata.sidenav-second-level.collapse
+           li
+             a(href='table_player_info.html') 玩家数据
+           li
+             a(href='table_skill_detail.html') 玩家道具数据
+           li
+             a(href='table_mission_detail.html') 玩家任务完成数据
+           li
+             a(href='table_seven_gift_detail.html') 玩家七天登录数据
+           li
+              a(href='rank_bomb.html') 核弹排行榜
+           li
+              a(href='rank_gold.html') 赢金榜
+           li
+              a(href='rank_redpacket.html') 红包榜
+      //==========================================================
+      li.nav-item(data-toggle='tooltip', data-placement='right', title='Components')
+         a.nav-link.nav-link-collapse.collapsed(data-toggle='collapse', href='#collapseComponents2', data-parent='#exampleAccordion')
+           i.fa.fa-fw.fa-wrench
+           span.nav-link-text
+             | 系统设计
+         ul#collapseComponents2.sidenav-second-level.collapse
+           li
+             a(href='table_fish_config.html') 鱼类设计
+           li
+             a(href='table_fish_room_config.html') 鱼类在房间的设计
+           li
+             a(href='table_config_level_reward.html') 升级奖励
+           li
+             a(href='table_skill_config.html') 道具设计
+             li
+               a(href='table_config_vip.html') Vip设计
+           li
+             a(href='table_mission_config.html') 任务设计
+           li
+             a(href='table_seven_gift_config.html') 七天登录配置
+
+           li
+              a(href='table_sampling_config.html') 房间采样点设计
+           li
+             a(href='table_red_packet_lottery_config.html') 抽奖配置
+           li
+             a(href='table_shop_config.html') 商城配置
+           li
+             a(href='table_share_config.html') 分享配置
+           li
+             a(href='table_room_config.html') 房间配置
+           li
+             a(href='table_red_packet_config.html') 红包场奖励配置
+           li
+             a(href='table_red_packet_fire_config.html') 红包场炮倍配置
+           li
+             a(href='table_lottery_config.html') 奖金鱼配置
+           li
+             a(href='table_activity_config.html') 活动配置
+
+      //==================================
+      li.nav-item(data-toggle='tooltip', data-placement='right', title='Components')
+        a.nav-link.nav-link-collapse.collapsed(data-toggle='collapse', href='#collapseComponents', data-parent='#exampleAccordion')
+          i.fa.fa-fw.fa-wrench
+          span.nav-link-text
+            | 房间出鱼设计
+        ul#collapseComponents.sidenav-second-level.collapse
+          li
+            a(href='fish_out_tables.html?roomId=0&waveId=0') 阳光沙滩
+
+          li
+            a(href='fish_out_tables.html?roomId=1&waveId=0') 海底遗迹
+
+          li
+            a(href='fish_out_tables.html?roomId=2&waveId=0') 深海宝库
+
+          li
+            a(href='fish_out_tables.html?roomId=100&waveId=0') 红包场
+
+
+          li
+            a(href='table_wave_config.html') 换波设计
+            //===================
+
+      //li.nav-item(data-toggle='tooltip', data-placement='right', title='Example Pages')
+      //  a.nav-link.nav-link-collapse.collapsed(data-toggle='collapse', href='#collapseExamplePages', data-parent='#exampleAccordion')
+      //    i.fa.fa-fw.fa-file
+      //    span.nav-link-text
+      //      | 数据设计
+      //  ul#collapseExamplePages.sidenav-second-level.collapse
+      //
+      //    li
+      //      a(href='register.html') Registration Page
+      //    li
+      //      a(href='forgot-password.html') Forgot Password Page
+      //    li
+      //      a(href='blank.html') Blank Page
+      //li.nav-item(data-toggle='tooltip', data-placement='right', title='Menu Levels')
+      //  a.nav-link.nav-link-collapse.collapsed(data-toggle='collapse', href='#collapseMulti', data-parent='#exampleAccordion')
+      //    i.fa.fa-fw.fa-sitemap
+      //    span.nav-link-text
+      //      | Menu Levels
+      //  ul#collapseMulti.sidenav-second-level.collapse
+      //    li
+      //      a(href='#') Second Level Item
+      //    li
+      //      a(href='#') Second Level Item
+      //    li
+      //      a(href='#') Second Level Item
+      //    li
+      //      a.nav-link-collapse.collapsed(data-toggle='collapse', href='#collapseMulti2') Third Level
+      //      ul#collapseMulti2.sidenav-third-level.collapse
+      //        li
+      //          a(href='#') Third Level Item
+      //        li
+      //          a(href='#') Third Level Item
+      //        li
+      //          a(href='#') Third Level Item
+      //li.nav-item(data-toggle='tooltip', data-placement='right', title='Link')
+      //  a.nav-link(href='#')
+      //    i.fa.fa-fw.fa-link
+      //    span.nav-link-text
+      //      | Link
+    ul.navbar-nav.sidenav-toggler
+      li.nav-item
+        a#sidenavToggler.nav-link.text-center
+          i.fa.fa-fw.fa-angle-left
+    ul.navbar-nav.ml-auto
+      li.nav-item.dropdown
+        a#messagesDropdown.nav-link.dropdown-toggle.mr-lg-2(href='#', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false')
+          i.fa.fa-fw.fa-envelope
+          span.d-lg-none
+            | Messages
+            span.badge.badge-pill.badge-primary 12 New
+          span.indicator.text-primary.d-none.d-lg-block
+            i.fa.fa-fw.fa-circle
+        .dropdown-menu(aria-labelledby='messagesDropdown')
+          h6.dropdown-header New Messages:
+          .dropdown-divider
+          a.dropdown-item(href='#')
+            strong David Miller
+            span.small.float-right.text-muted 11:21 AM
+            .dropdown-message.small
+              | Hey there! This new version of SB Admin is pretty awesome! These messages clip off when they reach the end of the box so they don't overflow over to the sides!
+          .dropdown-divider
+          a.dropdown-item(href='#')
+            strong Jane Smith
+            span.small.float-right.text-muted 11:21 AM
+            .dropdown-message.small
+              | I was wondering if you could meet for an appointment at 3:00 instead of 4:00. Thanks!
+          .dropdown-divider
+          a.dropdown-item(href='#')
+            strong John Doe
+            span.small.float-right.text-muted 11:21 AM
+            .dropdown-message.small
+              | I've sent the final files over to you for review. When you're able to sign off of them let me know and we can discuss distribution.
+          .dropdown-divider
+          a.dropdown-item.small(href='#')
+            | View all messages
+      li.nav-item.dropdown
+        a#alertsDropdown.nav-link.dropdown-toggle.mr-lg-2(href='#', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false')
+          i.fa.fa-fw.fa-bell
+          span.d-lg-none
+            | Alerts
+            span.badge.badge-pill.badge-warning 6 New
+          span.indicator.text-warning.d-none.d-lg-block
+            i.fa.fa-fw.fa-circle
+        .dropdown-menu(aria-labelledby='alertsDropdown')
+          h6.dropdown-header New Alerts:
+          .dropdown-divider
+          a.dropdown-item(href='#')
+            span.text-success
+              strong
+                i.fa.fa-long-arrow-up.fa-fw
+                | Status Update
+            span.small.float-right.text-muted 11:21 AM
+            .dropdown-message.small This is an automated server response message. All systems are online.
+          .dropdown-divider
+          a.dropdown-item(href='#')
+            span.text-danger
+              strong
+                i.fa.fa-long-arrow-down.fa-fw
+                | Status Update
+            span.small.float-right.text-muted 11:21 AM
+            .dropdown-message.small This is an automated server response message. All systems are online.
+          .dropdown-divider
+          a.dropdown-item(href='#')
+            span.text-success
+              strong
+                i.fa.fa-long-arrow-up.fa-fw
+                | Status Update
+            span.small.float-right.text-muted 11:21 AM
+            .dropdown-message.small This is an automated server response message. All systems are online.
+          .dropdown-divider
+          a.dropdown-item.small(href='#')
+            | View all alerts
+      li.nav-item
+        form.form-inline.my-2.my-lg-0.mr-lg-2
+          .input-group
+            input.form-control(type='text', placeholder='Search for...')
+            span.input-group-append
+              button.btn.btn-primary(type='button')
+                i.fa.fa-search
+      li.nav-item
+        a.nav-link(data-toggle='modal', data-target='#exampleModal')
+          i.fa.fa-fw.fa-sign-out
+          | Logout

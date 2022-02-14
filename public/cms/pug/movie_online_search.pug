@@ -1,0 +1,163 @@
+doctype html
+html(lang='en')
+
+    head
+        meta(charset='utf-8')
+        meta(http-equiv='X-UA-Compatible', content='IE=edge')
+        meta(name='viewport', content='width=device-width, initial-scale=1, shrink-to-fit=no')
+        meta(name='description', content='')
+        meta(name='author', content='')
+
+        include ../pug_includes/titleTV.pug
+
+        include ../pug_includes/css/core.pug
+
+        // Page level plugin CSS
+        link(href='vendor/datatables/dataTables.bootstrap4.css', rel='stylesheet')
+
+        include ../pug_includes/css/custom.pug
+
+
+    //----------------------------
+    body#page-top.fixed-nav.sticky-footer.bg-dark
+        div(class="modal fade" id="edit" tabindex="-1" role="dialog"
+            aria-labelledby="myModalLabel" aria-hidden="true"
+            style="position:fixed;top:20%")
+            div(class="modal-dialog")
+                div(class="modal-content")
+                    div(class="modal-header")
+                        h4(class="modal-title" id="info-dialog-title")
+                        button(type="button" class="close" data-dismiss="modal" aria-hidden="true") &times;
+                    div( id="edit_inputs" class="modal-body")
+                    div( class="modal-footer text-center")
+                        button(type="button" data-dismiss="modal" class="btn btn-outline-danger" id="btn-delete") 删除
+                            button(type="button" class="btn btn-default" data-dismiss="modal") 关闭
+                            button(type="button" data-dismiss="modal" class="btn btn-warning" id="btn-add") 添加
+                            button(type="button" data-dismiss="mSodal" class="btn btn-primary" id="btn-edit") 提交修改
+
+
+
+        include ../pug_includes/navbar.pug
+        .content-wrapper
+            .container-fluid
+                // Breadcrumbs
+                ol.breadcrumb
+                    li.breadcrumb-item
+                        div
+                            pan  视频搜索系统：
+
+                        div(id="input" )
+                            input(id="txt_asin_code",type="text")
+                            span &emsp;&emsp;
+                            button(id ="btnGet" type="button" data-dismiss="modal" class="btn btn-outline-danger"  onclick="getDataFromM11K(1)") 获取数据
+                        div
+                            label(id="showTip") fill ASIN before getdata
+                       
+
+                        div(id="divProduct")
+
+include ../pug_includes/footer.pug
+
+include ../pug_includes/scroll-to-top.pug
+
+include ../pug_includes/modals/logout.pug
+
+include ../pug_includes/js/core.pug
+
+// Page level plugin JavaScript
+script(src='vendor/datatables/jquery.dataTables.js')
+script(src='vendor/datatables/dataTables.bootstrap4.js')
+
+include ../pug_includes/js/custom.pug
+
+
+// Custom scripts for this page
+script(src='js/sb-admin-datatables.min.js')
+script(src='js/sb-admin-datatables.min.js')
+script(src="js/DataProvider.js")
+script(src="js/FileResder.js")
+script(src="js/UtilMovie.js")
+script.
+
+    var btn = document.getElementById('btnGet');
+    var lbl = document.getElementById('showTip');
+    var divProduct= document.getElementById('divProduct');
+    var input= document.getElementById('input');
+
+    var ASNICode = document.getElementById('ASNICode');
+    var ASNIModel = document.getElementById('ASNIModel');
+    var SalsesRank = document.getElementById('SalsesRank');
+    var Dimensions = document.getElementById('Dimensions');
+
+    var platform = '0';
+    var type = '0';
+    var save = '0';
+    var arrdatas={};
+    init();
+    function init(){
+        var pm =  getQueryString('platform');
+        if(pm && pm!=''){
+            platform = pm;
+        }
+        initTitle(document.getElementsByClassName('navbar-brand')[0],pm);
+        initTitle(document.getElementById('titletv'),pm);
+
+        $("input[name='pp'][value="+platform+"]").attr("checked", true);
+        lbl.textContent = "请输入关键字!";
+    }
+
+
+    //==============
+    function getDataFromM11K(ty) {
+        var kw = $('#txt_asin_code')[0].value;
+        if(kw=="" && type=="1"){
+            lbl.textContent = "请输入关键字!";
+        }else{
+            divProduct.innerHTML = "<span>**************************</span>";
+
+            if(ty !=1 && arrdatas[platform]!=null && arrdatas[platform].kw ==kw && arrdatas[platform].data !=null){
+                showProduct(arrdatas[platform].data,"旧数据");
+            }else{
+                arrdatas[platform] = {};
+                arrdatas[platform].kw=kw;
+                lbl.textContent = "正在搜索" + gettitleName(platform);
+                var keyword = encodeURI(kw);
+                var obj = {keyword: keyword, platform: 1,type:type,save:save};
+                var url = "/getMovieSearchData";
+                this.searchData("/getMovieSearchData", JSON.stringify(obj), "刷新成功");
+            }
+
+        }
+    }
+    function showInfo(t,msg=''){
+        switch (t){
+            case 0:
+                lbl.textContent = "I'm ready!";
+                btn.style.display = "inline";
+                divProduct.style.display="none";
+                break;
+            case 1:
+                lbl.textContent = "getting data please wait!";
+                btn.style.display = "none";
+                divProduct.style.display="none";
+                break;
+            case 2:
+                btn.style.display = "inline";
+                divProduct.style.display = "inline";
+                msg = lbl.textContent+msg;
+                break;
+        }
+        if(msg!='')
+            lbl.textContent = msg;
+
+    }
+    function showProduct(data,t){
+        lbl.textContent=(t?t:"完成搜索：")+gettitleName(platform);
+        tableinfo(data.data);
+
+    }
+    function onShowMV(platform,link,title) {
+        var asincode = $('#txt_asin_code')[0].value;
+        window.location.href = '/cms/movie_online_info.html?platform='+platform+'&&link=' + link +"&&title="+title+"&&key="+asincode;
+    }
+  
