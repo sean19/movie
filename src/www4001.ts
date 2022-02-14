@@ -15,7 +15,6 @@ var config = require(pathconfig);
 
 // var debug = require('debug')('fish:server');
 var http = require('http');
-
 var express = require('express');
 var session = require('express-session');
 var RedisStore = require('connect-redis')(session);
